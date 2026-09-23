@@ -1,0 +1,10 @@
+#hud .compass{display:none!important}
+#hand-compass{position:fixed;right:max(10px,env(safe-area-inset-right));bottom:max(104px,calc(env(safe-area-inset-bottom) + 86px));width:clamp(150px,44vw,260px);height:clamp(142px,40vw,235px);pointer-events:none;user-select:none;-webkit-user-select:none}
+#hand-compass[hidden]{display:none!important}
+#hand-compass-distance{position:absolute;bottom:0;left:0;right:0;text-align:center;color:#d4cfb6;font:11px/20px var(--mono);letter-spacing:.08em;text-shadow:0 1px 4px #000,0 0 10px #000}
+#hud #compass-toggle{position:relative;width:44px;min-width:44px;height:44px;color:#d5d5b9;pointer-events:auto}
+#compass-toggle svg{width:24px;height:24px}
+#compass-toggle::after{content:'ON';position:absolute;bottom:0;left:0;right:0;font:8px/10px var(--mono);letter-spacing:.08em}
+#compass-toggle[aria-pressed="false"]{opacity:.5}
+#compass-toggle[aria-pressed="false"]::after{content:'OFF'}
+@media(orientation:landscape) and (max-height:540px){#hand-compass{width:170px;height:146px;bottom:max(100px,calc(env(safe-area-inset-bottom) + 82px))}}

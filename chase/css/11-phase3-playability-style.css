@@ -1,0 +1,11 @@
+
+/* The stamina meter belongs with the survival gauges, not at the bottom edge. */
+#hud .health-status .stamina-wrap{position:relative!important;left:auto!important;bottom:auto!important;transform:none!important;width:100%!important;margin-top:9px}
+#hud .health-status .stamina-label{font-size:7px;text-align:left;margin-bottom:5px;letter-spacing:.13em;color:#9faa91}
+#hud .health-status .stamina-track{height:3px;width:100%}
+#bike-compass{margin-top:4px;display:flex;align-items:center;justify-content:center;gap:5px;font:8px/1.3 var(--mono);letter-spacing:.08em;color:#c4ceb3}
+#bike-compass-arrow{display:inline-block;color:#d2dcae;font-size:12px;line-height:1;transform-origin:50% 50%;filter:drop-shadow(0 1px 3px #000)}
+#bike-compass-distance{min-width:28px;text-align:left}
+#shrine-clue-memory{margin:0 0 14px;padding:11px 13px;border:1px solid #aebe9a2c;background:#aebe9a09;color:#b8c5ab;font:10px/1.7 var(--mono);letter-spacing:.07em}
+#shrine-clue-memory strong{color:#e1e7d3;font-size:12px;letter-spacing:.12em}
+@media(max-width:600px){#bike-compass{font-size:7px}.compass{min-width:82px}}

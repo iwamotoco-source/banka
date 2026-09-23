@@ -1,0 +1,15 @@
+#hud #interaction{display:none!important}
+#hand-compass-distance{display:none!important}
+#compass-visible-needle{position:absolute;left:50%;top:50%;width:13px;height:56px;z-index:2;pointer-events:none;filter:drop-shadow(0 1px 2px #000) drop-shadow(0 0 5px #180b08);transform-origin:50% 50%;}
+#compass-visible-needle::before{content:'';position:absolute;left:0;top:0;width:13px;height:30px;background:#ee6549;clip-path:polygon(50% 0,100% 100%,50% 78%,0 100%)}
+#compass-visible-needle::after{content:'';position:absolute;left:3px;top:28px;width:7px;height:25px;background:#c8c7aa;clip-path:polygon(0 0,100% 0,50% 100%)}
+body.touch-game #desktop-hint{display:none!important}
+@media(pointer:coarse){#desktop-hint{display:none!important}}
+@media(orientation:landscape){
+ #hud .hud-top{grid-template-areas:'status controls' 'summary controls';align-items:start;row-gap:3px}
+ #hud .status-box{padding-top:8px;width:min(440px,65vw);grid-template-columns:1.35fr 1fr 1fr;gap:14px}
+ #hud .hud-summary{min-height:36px;align-self:start}
+ #hud .battery-head{letter-spacing:0;gap:6px;white-space:nowrap}
+ #hud .battery-name{font-size:10px}
+ #hand-compass{bottom:max(10px,calc(env(safe-area-inset-bottom) + 4px))!important}
+}

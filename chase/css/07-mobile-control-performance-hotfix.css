@@ -1,0 +1,9 @@
+
+/* Directly interactive movement pad: the old build used the pad only as a visual overlay. */
+#hud #joystick{pointer-events:auto!important;touch-action:none!important;-webkit-user-select:none!important;user-select:none!important;z-index:34}
+#hud #joystick #stick{pointer-events:none!important;will-change:transform}
+@media (pointer:coarse){
+  /* Keep the horror effects, but avoid an extra full-screen compositor pass on mobile. */
+  #grain{display:none!important}
+  .status-box{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+}

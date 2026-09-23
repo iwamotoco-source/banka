@@ -1,0 +1,10 @@
+
+/* Prologue is prose-first: no faux VHS/grain/scanline layer while reading. */
+#ux-front.is-prologue .ux-grain,#ux-front.is-prologue .ux-scan{display:none!important}
+#ux-front.is-prologue .ux-prologue-bg{filter:brightness(.29) saturate(.48) blur(.7px)!important}
+#ux-front .ux-pages{top:50%!important;bottom:auto!important;min-height:0!important;height:min(55vh,540px);align-items:center!important;transform:translateY(-50%)}
+#ux-front .ux-page{top:50%!important;bottom:auto!important;transform:translate(24px,-50%);}
+#ux-front .ux-page.active{transform:translate(0,-50%)!important}
+#ux-front .ux-page.prev{transform:translate(-24px,-50%)!important}
+#ux-front .ux-page p{max-width:720px;font-size:15px;line-height:2.05;letter-spacing:.045em}
+@media(max-height:700px){#ux-front .ux-pages{top:48%!important;height:52vh}#ux-front .ux-page h2{font-size:29px;margin-bottom:10px}#ux-front .ux-page p{font-size:13px;line-height:1.82}}

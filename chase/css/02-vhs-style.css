@@ -1,0 +1,77 @@
+
+#vhsFx{
+  position:fixed;inset:0;pointer-events:none;z-index:9997;
+  display:none;overflow:hidden;opacity:.42;
+}
+#vhsFx.on{display:block}
+#vhsGhost{
+  position:absolute;inset:0;width:100%;height:100%;
+  opacity:.12;filter:blur(.65px) saturate(.58) contrast(1.03);
+  mix-blend-mode:screen;transform:translateX(.7px);
+}
+#vhsFx::before{
+  content:"";position:absolute;inset:0;z-index:2;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,.018) 0px,
+      rgba(255,255,255,.018) 1px,
+      rgba(0,0,0,.060) 1px,
+      rgba(0,0,0,.060) 3px
+    );
+  opacity:.66;
+  animation:vhsInterlace .11s steps(2,end) infinite;
+}
+#vhsFx::after{
+  content:"";position:absolute;inset:-1%;z-index:4;
+  background:
+    radial-gradient(ellipse at center,transparent 58%,rgba(0,0,0,.28) 100%),
+    linear-gradient(90deg,rgba(255,20,20,.018),transparent 28%,transparent 72%,rgba(40,80,255,.018));
+  animation:vhsSignalJitter 1.8s steps(1,end) infinite;
+}
+#vhsNoise{
+  position:absolute;inset:0;z-index:3;opacity:.055;
+  background-image:
+    radial-gradient(circle,#fff 0 .45px,transparent .7px),
+    radial-gradient(circle,#fff 0 .35px,transparent .6px);
+  background-size:4px 4px,5px 5px;
+  background-position:0 0,2px 1px;
+  animation:vhsNoise .13s steps(2,end) infinite;
+}
+#vhsTear{
+  position:absolute;left:-2%;width:104%;height:1px;top:18%;z-index:3;
+  background:rgba(220,235,225,.12);
+  box-shadow:0 1px 0 rgba(0,0,0,.10);
+  opacity:.18;
+  animation:vhsHeadSwitch 5.6s steps(1,end) infinite;
+}
+body.vhs-on canvas#world{
+  filter:contrast(.98) saturate(.42) brightness(.90) blur(.16px);
+  transform:translateZ(0) scale(1.002);
+}
+body.vhs-on #game{
+  transform:translateZ(0);
+}
+@keyframes vhsInterlace{
+  0%{transform:translateY(0)}
+  50%{transform:translateY(1px)}
+  100%{transform:translateY(0)}
+}
+@keyframes vhsSignalJitter{
+  0%,72%,100%{transform:translateX(0)}
+  73%{transform:translateX(.65px)}
+  74%{transform:translateX(-.35px)}
+  75%{transform:translateX(0)}
+}
+@keyframes vhsHeadSwitch{
+  0%,84%,100%{top:18%;opacity:.10;transform:translateX(0)}
+  85%{top:47%;opacity:.22;transform:translateX(1px)}
+  86%{top:63%;opacity:.08;transform:translateX(-1px)}
+}
+@keyframes vhsNoise{
+  0%{transform:translate(0,0)}
+  25%{transform:translate(.5px,-.5px)}
+  50%{transform:translate(-.5px,.5px)}
+  75%{transform:translate(.5px,.5px)}
+  100%{transform:translate(0,0)}
+}

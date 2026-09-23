@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="application-name" content="晩夏">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="晩夏">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#070807">
+<title>晩夏 — GAME OVER</title>
+<style>
+:root{
+ --ivory:#eee8dc;--soft:#beb5a6;--muted:#766f65;
+ --gold:#b79c70;--gold2:#d9c39c;--red:#8d2622;
+ --serif:"Yu Mincho","Hiragino Mincho ProN",serif;
+ --sans:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#050605;color:var(--ivory)}
+body{font-family:var(--serif)}
+button{font:inherit;color:inherit}
+#gameover{position:fixed;inset:0;overflow:hidden;background:#050605;isolation:isolate}
+.bg{position:absolute;inset:-1.5%;width:103%;height:103%;object-fit:cover;object-position:center;filter:brightness(.62) saturate(.72) contrast(1.1)}
+.veil{position:absolute;inset:0;z-index:1;pointer-events:none;background:
+ radial-gradient(ellipse at 50% 42%,rgba(0,0,0,0) 16%,rgba(0,0,0,.08) 40%,rgba(0,0,0,.56) 100%),
+ linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.02) 28%,rgba(0,0,0,.08) 65%,rgba(0,0,0,.78))}
+.grain{position:absolute;inset:-20%;z-index:2;pointer-events:none;opacity:.045;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E")}
+.header{position:absolute;z-index:5;top:3.2%;left:50%;transform:translateX(-50%);width:70%;text-align:center;text-shadow:0 2px 18px #000}
+.kicker{font-family:var(--sans);font-size:clamp(8px,1vw,12px);letter-spacing:.58em;margin-left:.58em;color:#bd9589;white-space:nowrap}
+h1{font-size:clamp(30px,3.7vw,54px);font-weight:400;letter-spacing:.23em;margin:.35em 0 0 .23em;line-height:.95}
+.header:after{content:"";display:block;width:180px;max-width:28%;height:1px;margin:9px auto 0;background:linear-gradient(90deg,transparent,rgba(183,156,112,.75),transparent)}
+.poster-stage{position:absolute;z-index:4;left:50%;top:17.2%;transform:translateX(-50%);height:51.5%;aspect-ratio:3/4;display:grid;place-items:center;filter:drop-shadow(0 16px 27px rgba(0,0,0,.78))}
+.poster-stage:before{content:"";position:absolute;inset:-8px;border:1px solid rgba(214,194,158,.18)}
+.poster{display:block;width:100%;height:100%;object-fit:contain;user-select:none;-webkit-user-drag:none}
+.result-line{position:absolute;z-index:5;left:50%;top:70.5%;transform:translateX(-50%);width:min(68%,720px);display:flex;justify-content:center;align-items:center;gap:1.25em;padding:10px 22px;border-top:1px solid rgba(183,156,112,.26);border-bottom:1px solid rgba(183,156,112,.16);background:linear-gradient(90deg,transparent,rgba(4,4,4,.52) 12%,rgba(4,4,4,.52) 88%,transparent);font-family:var(--sans);font-size:clamp(10px,1.12vw,15px);letter-spacing:.14em;color:#bbb2a3;white-space:nowrap;text-shadow:0 2px 10px #000}
+.result-line b{font-weight:500;color:#eee5d6;font-variant-numeric:tabular-nums}.dot{color:var(--gold);opacity:.5}
+.actions{position:absolute;z-index:5;left:50%;top:79.2%;transform:translateX(-50%);width:min(70%,760px);display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.action{height:clamp(48px,8.5vh,68px);border:1px solid rgba(190,171,136,.32);background:linear-gradient(180deg,rgba(18,17,15,.9),rgba(6,6,6,.95));font-size:clamp(13px,1.35vw,19px);letter-spacing:.12em;padding:0 24px;display:flex;align-items:center;justify-content:center;gap:1em;white-space:nowrap;word-break:keep-all;line-height:1;box-shadow:inset 0 1px rgba(255,255,255,.02),0 10px 30px rgba(0,0,0,.38)}
+.action.primary{justify-content:space-between;border-color:rgba(194,83,72,.6);background:linear-gradient(105deg,rgba(65,12,11,.95),rgba(130,34,29,.96) 53%,rgba(55,10,9,.97));color:#f2e9da}
+.action .arrow{font-family:var(--sans);font-size:1.3em;color:#e2cda8}
+.footer{position:absolute;z-index:5;left:50%;bottom:2.3%;transform:translateX(-50%);font-family:var(--sans);font-size:clamp(7px,.75vw,10px);letter-spacing:.08em;color:#6f685f;white-space:nowrap}
+.rotate-hint{display:none;position:fixed;inset:0;z-index:99;background:#070807;color:#ddd4c6;align-items:center;justify-content:center;text-align:center;font-family:var(--sans)}
+.rotate-hint .box{padding:24px}.rotate-icon{font-size:34px;margin-bottom:12px}.rotate-hint strong{display:block;font-size:17px;letter-spacing:.12em;font-weight:500}.rotate-hint small{display:block;margin-top:8px;color:#8e877d;font-size:11px;letter-spacing:.08em}
+@media (orientation:portrait){.rotate-hint{display:flex}}
+@media (max-height:520px) and (orientation:landscape){
+ .header{top:2.2%}.kicker{font-size:8px}h1{font-size:30px;margin-top:.25em}.header:after{margin-top:6px}
+ .poster-stage{top:15.6%;height:52.5%}.result-line{top:69.5%;padding:8px 18px}.actions{top:78.6%;gap:12px}.action{height:46px;font-size:13px}.footer{bottom:1.4%;font-size:7px}
+}
+@media (max-width:760px) and (orientation:landscape){.result-line{width:74%}.actions{width:76%}.poster-stage{height:50%}}
+</style>
+</head>
+<body>
+<main id="gameover">
+ <img class="bg" alt="" src="story-assets/a75b4668e822f5a54b8c706d.webp">
+ <div class="veil"></div><div class="grain"></div>
+ <header class="header"><div class="kicker">YOU NEVER LEFT THE VILLAGE</div></header>
+ <div class="poster-stage"><img class="poster" alt="行方不明者・矢吹悠斗の捜索ポスター" src="story-assets/7db6085b234b47aee5c0cdf2.webp"></div>
+ <div class="result-line" aria-live="polite"><span>探索時間 <b id="result-time">00:52</b></span><span class="dot">・</span><span>灯した灯籠 <b id="result-lamps">0</b> / <b id="result-total">7</b></span></div>
+ <div class="actions"><button class="action primary" id="retry"><span>もう一度、村へ</span><span class="arrow">→</span></button><button class="action" id="title"><span>タイトルに戻る</span></button></div>
+ <div class="footer">この画面はゲーム内の演出です。</div>
+</main>
+<div class="rotate-hint"><div class="box"><div class="rotate-icon">↻</div><strong>横向きでご覧ください</strong><small>晩夏は横画面で表示されます</small></div></div>
+<script>
+(()=>{const $=id=>document.getElementById(id);function setResult(d={}){if(d.time!=null)$('result-time').textContent=String(d.time);if(d.lamps!=null)$('result-lamps').textContent=String(d.lamps);if(d.total!=null)$('result-total').textContent=String(d.total)}function fire(name,fallback){const ev=new CustomEvent(name,{cancelable:true,detail:{source:'gameover'}});const allowed=window.dispatchEvent(ev);if(allowed&&typeof fallback==='function')fallback()}$('retry').addEventListener('click',()=>fire('banka:retryChase',()=>location.reload()));$('title').addEventListener('click',()=>fire('banka:returnTitle',()=>{location.href='index.html'}));window.BankaGameOver={setResult}})();
+</script>
+<script src="gameover-bridge.js"></script>
+
+<script src="./pwa-register.js"></script>
+</body></html>

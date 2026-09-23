@@ -1,0 +1,28 @@
+#landscape-guide{position:fixed;inset:0;z-index:2147483646;display:grid;place-items:center;padding:32px;background:#050b08;color:#dce3d4;text-align:center;touch-action:none}
+#landscape-guide[hidden]{display:none!important}
+#landscape-guide>div{max-width:360px}
+#landscape-guide svg{width:104px;height:84px;fill:none;stroke:#b9c5a6;stroke-width:2;margin-bottom:14px}
+#landscape-guide h2{font:500 20px/1.6 var(--serif);letter-spacing:.08em}
+#landscape-guide p{font-size:13px;line-height:1.8;color:#b3bdac}
+#landscape-guide small{display:block;margin-top:24px;font-size:12px;line-height:1.9;color:#7f8e7e}
+@media(orientation:landscape){
+ #hud .hud-top{left:max(16px,calc(env(safe-area-inset-left) + 12px));right:max(16px,calc(env(safe-area-inset-right) + 12px));top:max(6px,env(safe-area-inset-top));grid-template-columns:minmax(0,1fr) auto;grid-template-areas:'summary controls' 'status status';gap:4px 16px}
+ #hud .status-box{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;width:min(390px,65vw);max-width:none}
+ #hud .hud-top .health-status{display:contents;margin:0!important}
+ #hud .hud-top .health-status .stamina-wrap{position:static!important;margin:0!important;width:100%!important;transform:none!important}
+ #hud .battery-head,#hud .health-head,#hud .health-status .stamina-label{font-size:10px;line-height:14px;margin-bottom:4px}
+ #hud .hud-summary{min-height:40px}
+ #hud .hud-buttons button{height:44px;width:44px}
+ #hud #joystick{left:max(90px,calc(env(safe-area-inset-left) + 76px))!important;bottom:max(30px,calc(env(safe-area-inset-bottom) + 24px))!important;width:100px;height:100px}
+ #hud #interaction{right:max(18px,calc(env(safe-area-inset-right) + 12px))!important;bottom:max(22px,calc(env(safe-area-inset-bottom) + 16px))!important;min-height:52px}
+ #hand-compass{right:max(12px,calc(env(safe-area-inset-right) + 6px));bottom:max(84px,calc(env(safe-area-inset-bottom) + 72px));width:clamp(150px,23vw,220px);height:clamp(130px,21vw,190px)}
+ #touch-hints{display:none!important}
+ #desktop-hint{bottom:8px;font-size:9px}
+ .modal-shade{padding:12px max(16px,env(safe-area-inset-right))}
+ .modal,#record-dialog .inventory-modal{max-height:90dvh!important}
+}
+@media(orientation:landscape) and (max-height:360px){
+ #hand-compass{width:145px;height:123px}
+ #hud .hud-top{gap:0 12px}
+ #hud #joystick{bottom:25px!important}
+}

@@ -1,0 +1,258 @@
+[
+  {
+    "file": "chapter2-assets/95045cf20d9217d695d803a1.webp",
+    "mime": "image/webp",
+    "bytes": 60406,
+    "sha256": "95045cf20d9217d695d803a1955830679427b547e852af96bd859b0825fcaced",
+    "resolved_to": "story-assets/95045cf20d9217d695d803a1.webp",
+    "reused_existing": true
+  },
+  {
+    "file": "chapter2-assets/d433946e0e37f35c113ef683.jpg",
+    "mime": "image/jpeg",
+    "bytes": 388271,
+    "sha256": "d433946e0e37f35c113ef683daaea12a48c073be03986908a82dea6c27719c2f",
+    "resolved_to": "story-assets/d433946e0e37f35c113ef683.jpg",
+    "reused_existing": true
+  },
+  {
+    "file": "chapter2-assets/786ea5b18d33438d52cf5164.jpg",
+    "mime": "image/jpeg",
+    "bytes": 375119,
+    "sha256": "786ea5b18d33438d52cf51646231f5180e68bb2290e0aac7aaca76759d6d0768",
+    "resolved_to": "story-assets/786ea5b18d33438d52cf5164.jpg",
+    "reused_existing": true
+  },
+  {
+    "file": "chapter2-assets/a06f5519eb6fc4765a5a5476.jpg",
+    "mime": "image/jpeg",
+    "bytes": 455652,
+    "sha256": "a06f5519eb6fc4765a5a5476859422396ea7520c49baafac633e86d1d23a9ef5",
+    "resolved_to": "story-assets/a06f5519eb6fc4765a5a5476.jpg",
+    "reused_existing": true
+  },
+  {
+    "file": "chapter2-assets/a1163c186d6f4e73d282284d.jpg",
+    "mime": "image/jpeg",
+    "bytes": 237959,
+    "sha256": "a1163c186d6f4e73d282284d77be9d1cb302aade73df3de7baf855e839a90968",
+    "resolved_to": "story-assets/a1163c186d6f4e73d282284d.jpg",
+    "reused_existing": true
+  },
+  {
+    "file": "chapter2-assets/0415895b34908df2239d593f.jpg",
+    "mime": "image/jpeg",
+    "bytes": 316683,
+    "sha256": "0415895b34908df2239d593feb909bc3312f0b8d814ef53909207f93d8a48420",
+    "resolved_to": "story-assets/0415895b34908df2239d593f.jpg",
+    "reused_existing": true
+  },
+  {
+    "file": "chapter2-assets/1f9f6fa182141b62f7229e92.jpg",
+    "mime": "image/jpeg",
+    "bytes": 324514,
+    "sha256": "1f9f6fa182141b62f7229e929f2f6c755009e4bf9a74a2ef19dc6322d3d8ace5",
+    "resolved_to": "story-assets/1f9f6fa182141b62f7229e92.jpg",
+    "reused_existing": true
+  },
+  {
+    "file": "chapter2-assets/fc193bdd22a9f6079b013179.jpg",
+    "mime": "image/jpeg",
+    "bytes": 363874,
+    "sha256": "fc193bdd22a9f6079b013179e36d540f3cc9b89e755b3b791d710a4652908220",
+    "resolved_to": "story-assets/fc193bdd22a9f6079b013179.jpg",
+    "reused_existing": true
+  },
+  {
+    "file": "chapter2-assets/c0443b29d744345163759d09.jpg",
+    "mime": "image/jpeg",
+    "bytes": 405509,
+    "sha256": "c0443b29d744345163759d09f34ca64bf7d169e928bd21498d36abe5d7f08ce9",
+    "resolved_to": "story-assets/c0443b29d744345163759d09.jpg",
+    "reused_existing": true
+  },
+  {
+    "file": "chapter2-assets/5e520bdd9b538bba71d0562b.jpg",
+    "mime": "image/jpeg",
+    "bytes": 353242,
+    "sha256": "5e520bdd9b538bba71d0562bdee50f6d9447a81e9ec7d0de1dd975743c2d5d00",
+    "resolved_to": "story-assets/5e520bdd9b538bba71d0562b.jpg",
+    "reused_existing": true
+  },
+  {
+    "file": "chapter2-assets/ab4b32194bb876f02c8643b8.webp",
+    "mime": "image/webp",
+    "bytes": 79044,
+    "sha256": "ab4b32194bb876f02c8643b807b241b84fa864e6f8d84dcbbad995a1dc0fb877",
+    "resolved_to": "story-assets/ab4b32194bb876f02c8643b8.webp",
+    "reused_existing": true
+  },
+  {
+    "file": "chapter2-assets/5fb39a38dadf23ae1cdb645f.png",
+    "mime": "image/png",
+    "bytes": 1224260,
+    "sha256": "5fb39a38dadf23ae1cdb645f65ad9c8c6d74f8f8bce4c75a963e4b4af9667a0f",
+    "resolved_to": "chapter2-assets/5fb39a38dadf23ae1cdb645f.png",
+    "reused_existing": false
+  },
+  {
+    "file": "chapter2-assets/1bc083a27a9985481681563a.png",
+    "mime": "image/png",
+    "bytes": 1209697,
+    "sha256": "1bc083a27a9985481681563a6664263e43d87f00fe29da9361268c3d052b097b",
+    "resolved_to": "chapter2-assets/1bc083a27a9985481681563a.png",
+    "reused_existing": false
+  },
+  {
+    "file": "chapter2-assets/c456094b38d11e0f9c977cf1.png",
+    "mime": "image/png",
+    "bytes": 1235984,
+    "sha256": "c456094b38d11e0f9c977cf1cd2e2b4d7894ec0227f5c223106fee77bec5e080",
+    "resolved_to": "chapter2-assets/c456094b38d11e0f9c977cf1.png",
+    "reused_existing": false
+  },
+  {
+    "file": "chapter2-assets/52f5eb3225e3a080e582f234.webp",
+    "mime": "image/webp",
+    "bytes": 71504,
+    "sha256": "52f5eb3225e3a080e582f234551bf4a4f33cd4b73210fb22db91138ecbd7d2f1",
+    "resolved_to": "story-assets/52f5eb3225e3a080e582f234.webp",
+    "reused_existing": true
+  },
+  {
+    "file": "chapter2-assets/21eb376a5f76eedaf7c74a60.webp",
+    "mime": "image/webp",
+    "bytes": 65800,
+    "sha256": "21eb376a5f76eedaf7c74a609c8d46f61f907bc872922ae03ec180eaeb6d4457",
+    "resolved_to": "story-assets/21eb376a5f76eedaf7c74a60.webp",
+    "reused_existing": true
+  },
+  {
+    "file": "chapter2-assets/fd9e3c94190c059466b33f66.webp",
+    "mime": "image/webp",
+    "bytes": 70870,
+    "sha256": "fd9e3c94190c059466b33f66875050f95d9bdf58a4a082e60a8df5cce052ff8c",
+    "resolved_to": "story-assets/fd9e3c94190c059466b33f66.webp",
+    "reused_existing": true
+  },
+  {
+    "file": "chapter2-assets/bed5c792d26aa379c3876068.webp",
+    "mime": "image/webp",
+    "bytes": 71110,
+    "sha256": "bed5c792d26aa379c3876068451dcca488647960d8f9f1942c2cece67bf80950",
+    "resolved_to": "story-assets/bed5c792d26aa379c3876068.webp",
+    "reused_existing": true
+  },
+  {
+    "file": "chapter2-assets/5d481b0974ea6a32cb0cd49a.webp",
+    "mime": "image/webp",
+    "bytes": 85148,
+    "sha256": "5d481b0974ea6a32cb0cd49a23e6c5f5deec2f74a5a65d647856fcebcae8af7b",
+    "resolved_to": "story-assets/5d481b0974ea6a32cb0cd49a.webp",
+    "reused_existing": true
+  },
+  {
+    "file": "chapter2-assets/70988fd76c98799387f087b0.webp",
+    "mime": "image/webp",
+    "bytes": 76646,
+    "sha256": "70988fd76c98799387f087b04334390afe596727ef50c85362602bb688a40f88",
+    "resolved_to": "story-assets/70988fd76c98799387f087b0.webp",
+    "reused_existing": true
+  },
+  {
+    "file": "chapter2-assets/72b773657e4ee7331d2a5d02.webp",
+    "mime": "image/webp",
+    "bytes": 75014,
+    "sha256": "72b773657e4ee7331d2a5d02d78cee3bbdc2fc86ec41d6d969a31b18cf464b31",
+    "resolved_to": "story-assets/72b773657e4ee7331d2a5d02.webp",
+    "reused_existing": true
+  },
+  {
+    "file": "chapter2-assets/f374ba335c190de0703578fb.webp",
+    "mime": "image/webp",
+    "bytes": 80026,
+    "sha256": "f374ba335c190de0703578fb10b60b86583f5836541d2c3442bf101d22202de4",
+    "resolved_to": "story-assets/f374ba335c190de0703578fb.webp",
+    "reused_existing": true
+  },
+  {
+    "file": "chapter2-assets/e28672b7072eccfc5a74e811.webp",
+    "mime": "image/webp",
+    "bytes": 86174,
+    "sha256": "e28672b7072eccfc5a74e81127cbbd1e3f8c016cac9a417e9bff8aefc3661b6c",
+    "resolved_to": "story-assets/e28672b7072eccfc5a74e811.webp",
+    "reused_existing": true
+  },
+  {
+    "file": "chapter2-assets/a5bc83ad4c9937200dae4f31.webp",
+    "mime": "image/webp",
+    "bytes": 79072,
+    "sha256": "a5bc83ad4c9937200dae4f3180a81f796bd5cbe32c5da9b4084eba1ada984b30",
+    "resolved_to": "story-assets/a5bc83ad4c9937200dae4f31.webp",
+    "reused_existing": true
+  },
+  {
+    "file": "chapter2-assets/c0906261629fe1ab607de5ca.webp",
+    "mime": "image/webp",
+    "bytes": 80644,
+    "sha256": "c0906261629fe1ab607de5cace14c1839d6e0efe753d53c047425f5a379f3dd0",
+    "resolved_to": "story-assets/c0906261629fe1ab607de5ca.webp",
+    "reused_existing": true
+  },
+  {
+    "file": "chapter2-assets/6cc51832f7f7c4d4d8d68901.png",
+    "mime": "image/png",
+    "bytes": 2436345,
+    "sha256": "6cc51832f7f7c4d4d8d68901facf6d5c43cb6fb949a5228922e4351ce337c437",
+    "resolved_to": "chapter2-assets/6cc51832f7f7c4d4d8d68901.png",
+    "reused_existing": false
+  },
+  {
+    "file": "chapter2-assets/9c9e9a853a41d524ed644efc.png",
+    "mime": "image/png",
+    "bytes": 2239473,
+    "sha256": "9c9e9a853a41d524ed644efcfb81f0f323f7423bd6212dc6b964200bca006184",
+    "resolved_to": "chapter2-assets/9c9e9a853a41d524ed644efc.png",
+    "reused_existing": false
+  },
+  {
+    "file": "chapter2-assets/0fc363b044479beb0034effa.png",
+    "mime": "image/png",
+    "bytes": 1949856,
+    "sha256": "0fc363b044479beb0034effa8d0948b5dc4d1c56721a117486c08056500f94d4",
+    "resolved_to": "chapter2-assets/0fc363b044479beb0034effa.png",
+    "reused_existing": false
+  },
+  {
+    "file": "chapter2-assets/d4ad263ac4e4726f9ef3fca7.png",
+    "mime": "image/png",
+    "bytes": 1921962,
+    "sha256": "d4ad263ac4e4726f9ef3fca7ac5deadc92541369990a79ed3cb321cfabe82786",
+    "resolved_to": "chapter2-assets/d4ad263ac4e4726f9ef3fca7.png",
+    "reused_existing": false
+  },
+  {
+    "file": "chapter2-assets/567e8645b20512ff7fa26b22.png",
+    "mime": "image/png",
+    "bytes": 3021113,
+    "sha256": "567e8645b20512ff7fa26b22af132817a408dc556c72c0c36d3ce0f673f95a9a",
+    "resolved_to": "chapter2-assets/567e8645b20512ff7fa26b22.png",
+    "reused_existing": false
+  },
+  {
+    "file": "chapter2-assets/a7643cf25951aa4013428fa1.png",
+    "mime": "image/png",
+    "bytes": 2848834,
+    "sha256": "a7643cf25951aa4013428fa1a237e501198df0a983e9fe33098e35822e907ab0",
+    "resolved_to": "chapter2-assets/a7643cf25951aa4013428fa1.png",
+    "reused_existing": false
+  },
+  {
+    "file": "chapter2-assets/08b3ca93301676238e703792.mp3",
+    "mime": "audio/mpeg",
+    "bytes": 4099828,
+    "sha256": "08b3ca93301676238e703792cbd0951669df6103ed2eaa5f50cbc79f0dbe6ab9",
+    "resolved_to": "story-assets/08b3ca93301676238e703792.mp3",
+    "reused_existing": true
+  }
+]

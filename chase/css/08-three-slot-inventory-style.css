@@ -1,0 +1,52 @@
+
+#records-button{min-width:92px!important;padding:0 10px!important;font:11px var(--mono)!important;letter-spacing:.08em!important;white-space:nowrap}
+#record-dialog{z-index:46!important}
+#record-dialog .inventory-modal{width:min(720px,calc(100vw - 24px));max-height:min(82vh,760px);overflow:auto;background:linear-gradient(180deg,rgba(11,17,14,.98),rgba(5,9,7,.985))!important;color:#d8ddcb!important;border:1px solid rgba(174,190,154,.26);box-shadow:0 24px 70px #000c;touch-action:pan-y;padding:0!important}
+#record-dialog .inventory-head{position:sticky;top:0;z-index:3;padding:18px 18px 12px;background:linear-gradient(180deg,#0c120fff 72%,#0c120fe8);border-bottom:1px solid #aebe9a22}
+#record-dialog .inventory-head .modal-head{margin:0}
+#record-dialog .inventory-head h2{font:600 17px var(--sans);letter-spacing:.13em;color:#e4e8da;margin:0}
+#record-dialog .inventory-tabs{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:15px;background:#0005;padding:4px;border:1px solid #aebe9a18}
+#record-dialog .inventory-tab{height:42px;border:0;background:transparent;color:#899380;font:10px var(--mono);letter-spacing:.16em}
+#record-dialog .inventory-tab.active{background:#b8c69a12;color:#dce4ca;box-shadow:inset 0 0 0 1px #b8c69a2d}
+#record-dialog .inventory-content{padding:18px}
+#inventory-summary{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;color:#9ca990;font:10px var(--mono);letter-spacing:.1em}
+#inventory-summary strong{color:#e1e7d3;font-size:12px}
+#inventory-slots{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.inventory-slot{min-height:126px;padding:13px 10px;border:1px solid #aebe9a2d;background:linear-gradient(145deg,#172019aa,#090e0bbb);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative}
+.inventory-slot.empty{border-style:dashed;opacity:.48}
+.inventory-slot-index{position:absolute;top:7px;left:8px;font:8px var(--mono);color:#87907c}
+.inventory-item-mark{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;border:1px solid #bdcba67a;background:#bdcba60b;margin-bottom:10px;font:700 13px var(--mono);color:#dce5c9}
+.inventory-item-name{font:600 12px var(--sans);color:#e0e5d6;line-height:1.4}
+.inventory-item-kind{font:8px var(--mono);letter-spacing:.12em;color:#849078;margin-top:5px}
+.inventory-slot:not(.empty){cursor:pointer}
+.inventory-slot.selected{border-color:#c5d7a177;background:#afc28c14}
+#inventory-detail{margin-top:12px;min-height:70px;border-left:2px solid #9bad7e55;background:#0004;padding:12px 14px}
+#inventory-detail h3{margin:0 0 6px;font-size:13px;color:#dfe6d2}
+#inventory-detail p{margin:0;color:#a7b09d;font-size:11px;line-height:1.7}
+#inventory-note{margin-top:12px;font:9px var(--mono);line-height:1.7;color:#788272;letter-spacing:.04em}
+#inventory-records-panel{display:none}
+#record-dialog.records-tab #inventory-items-panel{display:none}
+#record-dialog.records-tab #inventory-records-panel{display:block}
+#record-dialog.records-tab .inventory-modal{background:linear-gradient(180deg,rgba(13,17,14,.99),rgba(8,10,8,.99))!important}
+#record-progress{font:10px var(--mono);letter-spacing:.13em;color:#9eaa91;margin-bottom:12px}
+#record-list{display:grid;gap:5px;margin-bottom:14px}
+#record-list button{display:block;width:100%;min-height:46px;text-align:left;padding:10px 12px;border:1px solid #aebe9a1d!important;background:#111812!important;color:#cdd5c0!important;font:11px var(--sans);letter-spacing:.03em}
+#record-list button.locked{color:#626a60!important;background:#0a0e0b!important;cursor:default}
+#record-list button.current{border-color:#b6c99a66!important;background:#aabe8e12!important}
+#record-paper{display:none;background:#d4c4a4;color:#29251f;padding:18px 16px;margin-top:8px;box-shadow:inset 0 0 25px #59462c22}
+#record-paper.notebook{background:repeating-linear-gradient(#e4e0d1 0 31px,#b6b7ad 32px)}
+#record-paper.visible{display:block}
+#record-meta{font-size:11px;margin:0 0 12px;color:#625646}
+#record-body{white-space:pre-wrap;font-size:14px;line-height:1.9;letter-spacing:.02em;color:#29251f}
+#record-back{display:none;margin-top:14px;width:100%}
+#record-back.visible{display:block}
+@media(max-width:560px){
+ #record-dialog .inventory-modal{width:calc(100vw - 14px);max-height:86vh}
+ #record-dialog .inventory-head{padding:14px 13px 10px}
+ #record-dialog .inventory-content{padding:13px}
+ #inventory-slots{gap:7px}
+ .inventory-slot{min-height:112px;padding:11px 6px}
+ .inventory-item-mark{width:36px;height:36px;margin-bottom:8px}
+ .inventory-item-name{font-size:11px}
+ #record-body{font-size:14px;line-height:1.85}
+}
