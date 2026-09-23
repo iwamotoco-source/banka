@@ -106,7 +106,8 @@ jobs:
 
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A -- . ':!_site'
+          echo '_site/' >> .git/info/exclude
+          git add -A
           if ! git diff --cached --quiet; then
             git commit -m 'Expand game site for GitHub Pages'
             git push origin HEAD:main
