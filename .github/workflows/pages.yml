@@ -1,0 +1,102 @@
+name: Deploy banka to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare site
+        id: prepare
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site
+
+          if [[ -f banka-site.ready ]]; then
+            expected_parts=$(awk -F= '/^parts=/{print $2}' banka-site.ready)
+            expected_sha=$(awk -F= '/^sha256=/{print $2}' banka-site.ready)
+
+            if [[ -z "${expected_parts:-}" || -z "${expected_sha:-}" ]]; then
+              echo "Invalid banka-site.ready marker"
+              exit 1
+            fi
+
+            missing=0
+            for ((i=0; i<expected_parts; i++)); do
+              part=$(printf 'banka-site.zip.part-%02d' "$i")
+              if [[ ! -f "$part" ]]; then
+                echo "Waiting for $part"
+                missing=1
+              fi
+            done
+
+            if [[ "$missing" -ne 0 ]]; then
+              echo "Split upload is not complete yet; keeping current Pages deployment unchanged."
+              echo "deploy=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+
+            cat banka-site.zip.part-* > /tmp/banka-site.zip
+            actual_sha=$(sha256sum /tmp/banka-site.zip | awk '{print $1}')
+            if [[ "$actual_sha" != "$expected_sha" ]]; then
+              echo "Split archive SHA-256 mismatch"
+              echo "expected: $expected_sha"
+              echo "actual:   $actual_sha"
+              exit 1
+            fi
+
+            unzip -q /tmp/banka-site.zip -d _site
+            echo "deploy=true" >> "$GITHUB_OUTPUT"
+
+          elif compgen -G 'banka-site.zip.part-*' > /dev/null; then
+            echo "Split upload is in progress. Upload banka-site.ready with the final batch."
+            echo "deploy=false" >> "$GITHUB_OUTPUT"
+            exit 0
+
+          else
+            rsync -a \
+              --exclude '.git/' \
+              --exclude '.github/' \
+              --exclude '_site/' \
+              --exclude 'banka-site.zip.part-*' \
+              --exclude 'banka-site.ready' \
+              ./ _site/
+            echo "deploy=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Configure Pages
+        if: steps.prepare.outputs.deploy == 'true'
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Upload site
+        if: steps.prepare.outputs.deploy == 'true'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy
+        if: steps.prepare.outputs.deploy == 'true'
+        id: deployment
+        uses: actions/deploy-pages@v4
