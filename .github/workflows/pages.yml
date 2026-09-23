@@ -1,4 +1,4 @@
-name: Deploy banka to GitHub Pages
+name: Materialize banka and deploy
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -23,6 +23,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - name: Prepare site
         id: prepare
@@ -45,14 +47,14 @@ jobs:
             for ((i=0; i<expected_parts; i++)); do
               part=$(printf 'banka-site.zip.part-%02d' "$i")
               if [[ ! -f "$part" ]]; then
-                echo "Waiting for $part"
+                echo "Missing $part"
                 missing=1
               fi
             done
 
             if [[ "$missing" -ne 0 ]]; then
-              echo "Split upload is not complete yet; keeping current Pages deployment unchanged."
               echo "deploy=false" >> "$GITHUB_OUTPUT"
+              echo "materialize=false" >> "$GITHUB_OUTPUT"
               exit 0
             fi
 
@@ -67,11 +69,14 @@ jobs:
 
             unzip -q /tmp/banka-site.zip -d _site
             chmod -R u+rwX,go+rX _site
+            test -f _site/index.html
             echo "deploy=true" >> "$GITHUB_OUTPUT"
+            echo "materialize=true" >> "$GITHUB_OUTPUT"
 
           elif compgen -G 'banka-site.zip.part-*' > /dev/null; then
-            echo "Split upload is in progress. Upload banka-site.ready with the final batch."
+            echo "Split upload is incomplete; waiting for banka-site.ready"
             echo "deploy=false" >> "$GITHUB_OUTPUT"
+            echo "materialize=false" >> "$GITHUB_OUTPUT"
             exit 0
 
           else
@@ -79,11 +84,32 @@ jobs:
               --exclude '.git/' \
               --exclude '.github/' \
               --exclude '_site/' \
-              --exclude 'banka-site.zip.part-*' \
-              --exclude 'banka-site.ready' \
               ./ _site/
             chmod -R u+rwX,go+rX _site
+            test -f _site/index.html
             echo "deploy=true" >> "$GITHUB_OUTPUT"
+            echo "materialize=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Materialize completed site into main
+        if: steps.prepare.outputs.materialize == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          find . -mindepth 1 -maxdepth 1 \
+            ! -name '.git' \
+            ! -name '.github' \
+            ! -name '_site' \
+            -exec rm -rf {} +
+          rsync -a _site/ ./
+          chmod -R u+rwX,go+rX .
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A -- . ':!_site'
+          if ! git diff --cached --quiet; then
+            git commit -m 'Expand game site for GitHub Pages'
+            git push origin HEAD:main
           fi
 
       - name: Configure Pages
