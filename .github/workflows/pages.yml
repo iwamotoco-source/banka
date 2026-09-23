@@ -66,6 +66,7 @@ jobs:
             fi
 
             unzip -q /tmp/banka-site.zip -d _site
+            chmod -R u+rwX,go+rX _site
             echo "deploy=true" >> "$GITHUB_OUTPUT"
 
           elif compgen -G 'banka-site.zip.part-*' > /dev/null; then
@@ -81,6 +82,7 @@ jobs:
               --exclude 'banka-site.zip.part-*' \
               --exclude 'banka-site.ready' \
               ./ _site/
+            chmod -R u+rwX,go+rX _site
             echo "deploy=true" >> "$GITHUB_OUTPUT"
           fi
 
