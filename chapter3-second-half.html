@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#080b0a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>晩夏 — 第三章 後半</title>
+<style>
+:root{--gold:#c9a262;--line:#6c5733;--ink:#f2eee5;--muted:#b8b1a6;--panel:rgba(5,10,10,.93);--blue:#4a9ee8;--danger:#a83232}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#050706;color:var(--ink);font-family:"Noto Serif JP","Hiragino Mincho ProN","Yu Mincho",serif}
+button{font:inherit;color:inherit}
+#app{position:fixed;inset:0;background:#050706;overflow:hidden}
+#bgA,#bgB{position:absolute;inset:-2%;background-size:cover;background-position:center;transition:opacity 1.1s ease,filter 1.1s ease,transform 4s ease;transform:scale(1.025)}
+#bgB{opacity:0}.bg-dim:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.15) 48%,rgba(0,0,0,.58));pointer-events:none}
+#cg{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.72);z-index:14;opacity:0;transition:opacity .6s ease}
+#cg.show{display:flex;opacity:1}
+#cgFrame{width:min(82vw,1320px);height:min(69vh,760px);border:1px solid rgba(201,162,98,.75);box-shadow:0 0 0 1px rgba(0,0,0,.9),0 24px 100px #000;background:#080a09 center/contain no-repeat;position:relative}
+#cgFrame.missing:before{content:attr(data-label);position:absolute;inset:0;display:grid;place-items:center;color:#c9b994;font-size:clamp(18px,2vw,32px);letter-spacing:.14em;background:radial-gradient(circle at 50% 35%,#1a211e,#080a09 68%)}
+#film{position:absolute;inset:0;pointer-events:none;z-index:18;opacity:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.024) 0 1px,transparent 1px 4px);mix-blend-mode:screen}
+#film.on{opacity:.42;animation:flicker .16s infinite alternate}@keyframes flicker{from{transform:translateX(-1px);opacity:.30}to{transform:translateX(1px);opacity:.48}}
+#flash{position:absolute;inset:0;background:white;z-index:70;opacity:0;pointer-events:none;transition:opacity .18s}
+#chapter{position:absolute;z-index:22;left:max(5.5vw,env(safe-area-inset-left));top:max(4.5vh,env(safe-area-inset-top));font-size:clamp(12px,1.2vw,18px);letter-spacing:.22em;text-shadow:0 2px 8px #000;color:#dfc693}
+#place{display:block;margin-top:.65em;color:#f0ece4;letter-spacing:.08em}
+#top{position:absolute;right:max(4.8vw,env(safe-area-inset-right));top:max(3.3vh,env(safe-area-inset-top));z-index:30;display:flex;gap:12px}
+.topbtn{background:rgba(8,11,10,.76);border:1px solid rgba(164,151,117,.28);padding:12px 20px;min-width:82px;font-size:clamp(13px,1.2vw,18px);letter-spacing:.08em}
+#sound{position:absolute;left:max(1.5vw,env(safe-area-inset-left));top:18%;z-index:30;width:48px;height:48px;border-radius:50%;border:0;background:#111;color:#ddd;font-family:sans-serif}
+#chars{position:absolute;inset:8% 5% 24%;z-index:12;pointer-events:none}
+.ch{position:absolute;bottom:-1.5%;max-height:96%;max-width:42%;object-fit:contain;opacity:0;transform:translateY(8px);transition:opacity .28s ease,transform .28s ease;filter:drop-shadow(0 12px 18px rgba(0,0,0,.72))}
+.ch.show{opacity:1;transform:translateY(0)}.ch.left{left:4%}.ch.center{left:50%;transform:translate(-50%,8px)}.ch.center.show{transform:translate(-50%,0)}.ch.right{right:4%}
+#dialogue{position:absolute;z-index:25;left:0;right:0;bottom:0;height:31%;min-height:182px;background:linear-gradient(180deg,rgba(3,9,9,.89),rgba(3,8,8,.97));border-top:1px solid rgba(201,162,98,.23);padding:3.4vh max(6.4vw,env(safe-area-inset-right)) max(3.2vh,env(safe-area-inset-bottom)) max(6.4vw,env(safe-area-inset-left));box-shadow:0 -20px 70px rgba(0,0,0,.32)}
+#dialogue:before{content:"";position:absolute;top:-1px;left:6%;width:8%;height:2px;background:var(--gold)}
+#name{height:26px;color:#d9ad64;font-size:clamp(15px,1.45vw,21px);letter-spacing:.1em;margin-bottom:7px}
+#name:after{content:"";display:inline-block;width:42px;height:1px;background:#725d37;margin-left:16px;vertical-align:middle}
+#text{font-size:clamp(18px,2vw,29px);line-height:1.75;letter-spacing:.06em;white-space:pre-wrap;text-shadow:0 2px 5px #000;max-width:92%}
+#advance{position:absolute;right:max(6.5vw,env(safe-area-inset-right));bottom:max(2.8vh,env(safe-area-inset-bottom));color:#dbb873;font-size:16px}
+#advance .dia{display:inline-block;margin-left:18px;transform:rotate(45deg);width:12px;height:12px;border:1px solid #a98b52}
+#bottomNav{position:absolute;left:max(6.4vw,env(safe-area-inset-left));bottom:max(2.65vh,env(safe-area-inset-bottom));display:flex;gap:28px;color:#aaa;font-size:clamp(11px,1.1vw,16px);z-index:28}.navlink{cursor:pointer}
+#choice{position:absolute;inset:0;z-index:55;display:none;align-items:center;justify-content:center;background:rgba(2,5,7,.24)}#choice.show{display:flex}
+#choiceBox{width:min(76vw,1120px);display:flex;flex-direction:column;gap:16px;margin-top:-4vh}
+#choicePrompt{text-align:center;font-size:clamp(18px,2vw,30px);margin-bottom:5px;text-shadow:0 3px 8px #000}
+.choiceBtn{position:relative;width:100%;padding:20px 34px;background:linear-gradient(135deg,rgba(10,17,28,.97),rgba(10,13,22,.98));border:2px solid #4389c6;box-shadow:inset 0 0 0 3px rgba(12,19,28,.9),0 0 0 1px #111;color:#fff;font-size:clamp(18px,2.1vw,31px);letter-spacing:.04em;text-align:center}.choiceBtn:before{content:"";position:absolute;inset:5px;border:1px solid rgba(127,196,255,.28);pointer-events:none}.choiceBtn:active{transform:scale(.992);filter:brightness(1.25)}
+#menu,#log,#saveToast,#titleCard{position:absolute;z-index:80}#menu,#log{inset:0;background:rgba(0,0,0,.91);display:none;padding:max(7vh,env(safe-area-inset-top)) 7vw max(6vh,env(safe-area-inset-bottom))}#menu.show,#log.show{display:block}
+.modalTitle{font-size:28px;color:#d5b777;letter-spacing:.15em;border-bottom:1px solid #58482e;padding-bottom:15px;margin-bottom:24px}.menuGrid{display:grid;grid-template-columns:repeat(2,minmax(160px,1fr));gap:14px;max-width:760px}.menubtn{background:#111;border:1px solid #5e513a;padding:16px;text-align:left}.close{position:absolute;right:6vw;top:6vh;background:none;border:1px solid #6e5b39;padding:10px 18px}
+#logList{height:76vh;overflow:auto;line-height:1.75;padding-right:15px}.logItem{padding:10px 0;border-bottom:1px solid #1f2826}.logName{color:#cda85d;margin-right:12px}
+#saveToast{left:50%;top:14%;transform:translateX(-50%);background:rgba(4,9,9,.9);border:1px solid #5b4b31;padding:10px 24px;opacity:0;transition:.25s;pointer-events:none}#saveToast.show{opacity:1}
+#titleCard{inset:0;display:none;place-items:center;background:#030504;color:#eee;text-align:center}#titleCard.show{display:grid}.tcSmall{color:#b69d6d;letter-spacing:.3em;font-size:14px}.tcBig{font-size:clamp(26px,4vw,54px);letter-spacing:.15em;margin:18px 0}.tcSub{color:#bcb6aa;font-size:16px;letter-spacing:.1em}
+#paper{position:absolute;z-index:48;left:50%;top:47%;transform:translate(-50%,-50%);width:min(70vw,900px);max-height:64vh;display:none;background:#d4c7a7;color:#241f17;padding:36px 44px;border:10px solid #4a4032;box-shadow:0 28px 100px #000;overflow:auto;font-family:"Yu Mincho",serif;line-height:2;font-size:clamp(16px,1.6vw,23px)}#paper.show{display:block}#paper .red{color:#6f1f1f;font-weight:bold}#paperHint{text-align:center;color:#625946;font-size:13px;margin-top:20px}
+#memoryName{position:absolute;z-index:65;inset:0;pointer-events:none;display:none;background:radial-gradient(circle,transparent 20%,rgba(255,255,255,.14) 55%,rgba(255,255,255,.9));mix-blend-mode:screen}#memoryName.show{display:block;animation:memoryPulse 1s infinite alternate}@keyframes memoryPulse{to{opacity:.45}}
+@media(max-width:760px){#dialogue{height:34%;padding-left:6vw;padding-right:6vw}#chars{inset:9% 2% 28%}.ch{max-width:52%}#choiceBox{width:88vw}.choiceBtn{padding:16px 18px}#top{gap:6px}.topbtn{min-width:0;padding:10px 13px}#bottomNav{gap:16px}#cgFrame{width:94vw;height:58vh}}
+</style>
+</head>
+<body>
+<div id="app" class="bg-dim">
+  <div id="bgA"></div><div id="bgB"></div><div id="film"></div><div id="flash"></div>
+  <div id="chapter">晩夏 / CHAPTER 3<span id="place">禁域・旧暮石</span></div>
+  <div id="top"><button class="topbtn" id="saveBtn">保存</button><button class="topbtn" id="menuBtn">メニュー</button></div>
+  <button id="sound">♪</button>
+  <div id="chars"><img id="chL" class="ch left"><img id="chC" class="ch center"><img id="chR" class="ch right"></div>
+  <div id="cg"><div id="cgFrame"></div></div>
+  <div id="paper"><div id="paperBody"></div><div id="paperHint">画面をタップして閉じる</div></div>
+  <div id="memoryName"></div>
+  <div id="dialogue">
+    <div id="name"></div><div id="text"></div>
+    <div id="bottomNav"><span class="navlink" id="logBtn">履歴</span><span class="navlink" id="autoBtn">自動送り</span><span class="navlink" id="hideBtn">画面のみ</span></div>
+    <div id="advance">次へ <span class="dia"></span></div>
+  </div>
+  <div id="choice"><div id="choiceBox"><div id="choicePrompt"></div><div id="choiceButtons"></div></div></div>
+  <div id="menu"><div class="modalTitle">MENU</div><button class="close" data-close="menu">閉じる</button><div class="menuGrid"><button class="menubtn" id="menuSave">セーブ</button><button class="menubtn" id="menuLoad">ロード</button><button class="menubtn" id="menuAuto">自動送り切替</button><button class="menubtn" id="menuLog">履歴</button><button class="menubtn" id="menuRestart">章の最初から</button><button class="menubtn" id="menuBgm">BGM ON/OFF</button></div></div>
+  <div id="log"><div class="modalTitle">LOG</div><button class="close" data-close="log">閉じる</button><div id="logList"></div></div>
+  <div id="saveToast">保存しました</div>
+  <div id="titleCard"><div><div class="tcSmall">晩夏 / CHAPTER 3</div><div class="tcBig" id="tcBig"></div><div class="tcSub" id="tcSub"></div></div></div>
+</div>
+<script>
+'use strict';
+const ROOT='.';
+const ASSET={
+  // 第三章後半の正式素材を chapter3-assets/ 以下に置けば、そのまま反映される。
+  bg_hideout:'chapter3-assets/bg_逃走後_廃屋内部.png',
+  bg_shrine:'chapter3-assets/bg_旧神社_拝殿内部_月明かり.png',
+  bg_shrine_dark:'chapter3-assets/bg_旧神社_拝殿内部_暗転後.png',
+  bg_mountain_dawn:'chapter3-assets/bg_9月1日_山中早朝.png',
+  bg_hospital:'chapter3-assets/bg_病院_病室.png',
+  bg_hospital_hall:'chapter3-assets/bg_病院_廊下.png',
+  bg_house:'chapter3-assets/bg_矢吹家_引越し前.png',
+  bg_road:'chapter3-assets/bg_暮石を離れる車窓.png',
+  bg_lab:'chapter3-assets/bg_宗一郎研究室.png',
+  bg_forbidden_night:'chapter3-assets/bg_禁域入口_夜.png',
+  bg_current:'chapter2-assets/567e8645b20512ff7fa26b22.png',
+  cg_ritual_truth:'chapter3-assets/cg_彩音が祭祀の真実を読む.png',
+  cg_scroll:'chapter3-assets/cg_巻物を悠太へ差し出す.png',
+  cg_serious:'chapter3-assets/cg_俺は本気だった.png',
+  cg_forget:'chapter3-assets/cg_忘れていいよ.png',
+  cg_alone:'chapter3-assets/cg_一人残る彩音.png',
+  cg_rescue:'chapter3-assets/cg_悠太救出.png',
+  cg_where:'chapter3-assets/cg_宗一郎_彩音はどこだ.png',
+  cg_soichiro:'chapter3-assets/cg_宗一郎が山へ向かう.png',
+  cg_car:'chapter3-assets/cg_引越し_車窓.png',
+  yuta:'chapter3-assets/ch_悠太少年_通常.png',
+  yuta_fear:'chapter3-assets/ch_悠太少年_焦り.png',
+  yuta_break:'chapter3-assets/ch_悠太少年_取り乱し.png',
+  yuta_tired:'chapter3-assets/ch_悠太少年_憔悴.png',
+  yuta_resolve:'chapter3-assets/ch_悠太少年_決意.png',
+  ayane:'chapter3-assets/ch_彩音_通常.png',
+  ayane_sad:'chapter3-assets/ch_彩音_悲しみ.png',
+  ayane_resolve:'chapter3-assets/ch_彩音_決意.png',
+  grandpa:'chapter3-assets/ch_矢吹じいちゃん_通常.png',
+  grandpa_serious:'chapter3-assets/ch_矢吹じいちゃん_真剣.png',
+  grandpa_bitter:'chapter3-assets/ch_矢吹じいちゃん_苦渋.png',
+  grandpa_stern:'chapter3-assets/ch_矢吹じいちゃん_静かな厳しさ.png',
+  father:'chapter3-assets/ch_悠太父_通常.png',
+  father_hard:'chapter3-assets/ch_悠太父_深刻.png',
+  father_pain:'chapter3-assets/ch_悠太父_苦悩.png',
+  mother:'chapter3-assets/ch_悠太母_通常.png',
+  mother_worry:'chapter3-assets/ch_悠太母_心配.png',
+  mother_relief:'chapter3-assets/ch_悠太母_安堵と悲しみ.png',
+  soichiro:'chapter3-assets/ch_宗一郎_通常.png',
+  soichiro_panic:'chapter3-assets/ch_宗一郎_取り乱し.png',
+  // 既存リポジトリに存在するBGMをデフォルトにし、専用BGMが追加されたら置換可能。
+  bgm_main:'story-assets/08b3ca93301676238e703792.mp3'
+};
+const BGFALLBACK={
+ hideout:'radial-gradient(circle at 50% 28%,#27302d 0,#111715 34%,#060807 74%),linear-gradient(135deg,#18201d,#050706)',
+ shrine:'radial-gradient(circle at 18% 20%,#233341 0,#0b1114 34%,#040606 70%),linear-gradient(90deg,#15100e,#050706)',
+ dark:'radial-gradient(circle at 50% 40%,#171818,#050606 68%)',
+ dawn:'linear-gradient(180deg,#53697a 0,#9c866e 34%,#26322d 68%,#0a0f0d 100%)',
+ hospital:'linear-gradient(135deg,#d9d7cd,#bfc2bd 45%,#939c9d 100%)',
+ hall:'linear-gradient(90deg,#c9c6bb,#9c9c94 58%,#767a77)',
+ house:'linear-gradient(145deg,#7b6a54,#3e342b 50%,#151513)',
+ road:'linear-gradient(180deg,#7f9db1,#c2a57c 42%,#435345 64%,#131815)',
+ lab:'radial-gradient(circle at 65% 38%,#5b4931,#1c1a17 48%,#090a09 78%)',
+ night:'linear-gradient(180deg,#101a2b,#071017 42%,#050807 100%)',
+ current:'linear-gradient(180deg,#1d2a28,#09100f 60%,#040605)'
+};
+const IMGKEY={hideout:'bg_hideout',shrine:'bg_shrine',dark:'bg_shrine_dark',dawn:'bg_mountain_dawn',hospital:'bg_hospital',hall:'bg_hospital_hall',house:'bg_house',road:'bg_road',lab:'bg_lab',night:'bg_forbidden_night',current:'bg_current'};
+const C=(name,text,opt={})=>({name,text,...opt});
+const N=(text,opt={})=>C('',text,opt);
+const T=(title,sub='')=>({titleCard:title,sub});
+const P=(html)=>({paper:html});
+const G=(key,label)=>({cg:key,cgLabel:label});
+const Q=(prompt,options)=>({choice:{prompt,options}});
+const scenes=[
+T('第三章　後半','十年前の八月三十一日 — その夜の続き'),
+N('荒い呼吸だけが、暗闇の中に残っていた。', {bg:'hideout',place:'禁域・崩れた社務所跡',bgm:'stop'}),
+N('遠くで、何かが木をへし折る。\n一度。二度。\nやがて、その音も闇の向こうへ消えていった。'),
+C('悠太','……行った？',{left:'yuta_fear',right:'ayane_sad'}),
+C('彩音','……たぶん。\nでも、まだ大きな声は出さないで。'),
+N('彩音の手は震えていた。\n袖の中に隠そうとしているのが、悠太には見えた。'),
+C('悠太','彩音ちゃん。'),
+C('彩音','大丈夫。'),
+C('悠太','聞いてねえよ。\n大丈夫かって。'),
+C('彩音','……じゃあ、大丈夫じゃない。'),
+C('悠太','俺も。'),
+N('ほんの少しだけ、二人は笑った。\n笑わなければ、ここが本当に現実だと認めてしまいそうだった。'),
+C('悠太','……祭り、聞こえないな。'),
+C('彩音','うん。虫も。風も。何にも。'),
+C('悠太','携帯……まだ十八時三十二分。'),
+C('彩音','私も同じ。'),
+C('悠太','じゃあ、時間まで止まってんのかよ……。'),
+N('答えを知っている者は、ここにはいなかった。'),
+T('拾ったもの','帰るための、わずかな手掛かり'),
+N('二人は逃げる途中で拾った紙片と木札を、床へ並べた。'),
+P('<b>古い祭祀記録・断片</b><br><br>七所に火を置くべし。<br>火、絶やすべからず。<br>七灯満つる時、道、正しき形へ戻る。<br><br><span class="red">ただし、名を——</span><br><br>以下、破損。'),
+C('悠太','「七所に火を置く」……。\nさっきの石像、蝋燭置くみたいな窪みあったよな。'),
+C('彩音','何個か見た。……七つなのかも。'),
+C('悠太','「道が戻る」って書いてある。\nこれやれば帰れるんじゃない？'),
+C('彩音','……そうかもしれない。'),
+C('悠太','だったらやろう。'),
+C('彩音','今すぐ？　さっきのがまだいるかもしれないよ。'),
+Q('どうする？',[{text:'ここにいても、あれが来るかもしれない',tag:'go'},{text:'怖いけど……帰る方法を試したい',tag:'go'},{text:'彩音ちゃんを一人にしたくない',tag:'go_soft'}]),
+C('悠太','ここに隠れてても、助かる保証ないだろ。\nだったら……帰る方法を試したい。',{when:'go'}),
+C('悠太','……俺、彩音ちゃんを一人にしたくない。\nだから一緒に行こう。',{when:'go_soft'}),
+C('彩音','……分かった。\n絶対、勝手に先へ行かないこと。'),
+C('悠太','それ俺じゃなくて彩音ちゃんに言うやつ。'),
+C('彩音','何それ。'),
+N('短いやり取り。\nそれだけで、少しだけ「いつもの二人」が戻った。'),
+N('建物を出る前、彩音が悠太の肩についた泥を払う。'),
+C('悠太','いいって。自分だって泥だらけじゃん。'),
+C('彩音','私はいいの。お姉さんだから。'),
+C('悠太','三つしか違わねえだろ。'),
+C('彩音','三つも違うんです。'),
+C('悠太','……帰ったら、じいちゃんにめちゃくちゃ怒られるな。'),
+C('彩音','私もお父さんに絶対怒られる。'),
+C('悠太','じゃあ二人で怒られればいいじゃん。'),
+C('彩音','……うん。'),
+C('彩音','それが、いいね。'),
+T('七つの灯','道を、正しき形へ'),
+N('一つ目の灯が点いた。',{bg:'shrine',place:'旧暮石・山道',bgm:'play'}),
+N('二つ目。\n三つ目。\n炎が増えるたび、道の形がわずかに変わる。'),
+N('昨日まで存在していたような家が消え、なかったはずの石段が現れる。'),
+C('悠太','……気持ち悪い。\nでも、進めてる。'),
+C('彩音','あと三つ。焦らないで。'),
+N('五つ目。\n遠くで、あの声がした。'),
+C('悠太','……来てる。'),
+C('彩音','走らない。音を立てないで。'),
+N('六つ目。\n世界そのものが、低く軋む。'),
+N('そして、七つ目。'),
+N('炎が灯った瞬間——霧が左右に割れた。'),
+N('その先に、古い神社が現れる。'),
+C('悠太','……あそこだ。'),
+C('彩音','記録にあった「社へ戻る」って……たぶん、あそこ。'),
+T('旧神社','最後の手順'),
+N('神社の内部は、長いあいだ人が入った形跡がなかった。',{bg:'shrine',place:'旧暮石・旧神社 拝殿内部'}),
+N('月明かりだけが崩れた板壁から差し込み、埃の粒を青白く浮かび上がらせている。'),
+N('祭壇に火はない。人の気配もない。\nあるのは、朽ちた祭具と古文書だけだった。'),
+C('悠太','これ……今の暮石神社に似てる。'),
+C('彩音','でも、ずっと古い。'),
+P('<b>祭祀記録</b><br><br>七灯を以て道を戻し、<br>名を現へ返す。<br><br>神前にて二名、名を唱え——<br><br>以降、欠損。'),
+C('悠太','ほら。やっぱ帰るための儀式だ。'),
+C('彩音','……最後が破れてる。'),
+C('悠太','別の紙に続きあるかもしれない。探そう。'),
+N('二人は、崩れた棚と古い箱を一つずつ確かめた。'),
+N('完全な手順は見つからない。\nそれでも、残っている部分だけなら実行できる。'),
+Q('このまま儀式を試す？',[{text:'ここまで来たんだ。やろう',tag:'ritual'},{text:'他に方法がないなら、試すしかない',tag:'ritual'},{text:'彩音ちゃんと一緒ならやる',tag:'ritual_soft'}]),
+C('悠太','ここまで来たんだ。やろう。',{when:'ritual'}),
+C('悠太','他に方法ないなら……試すしかない。',{when:'ritual'}),
+C('悠太','彩音ちゃんと一緒なら、やる。',{when:'ritual_soft'}),
+C('彩音','……うん。一緒に。'),
+T('祭祀','帰れる——そう思った'),
+N('二人は神前に並んだ。'),
+N('彩音が古文書を読み、悠太がその言葉を追う。'),
+N('遠くの七つの灯が、一つずつ強く輝き始めた。'),
+N('風が吹く。\nこの場所へ来てから初めて感じる、本物の風。'),
+N('そして——祭囃子。'),
+C('悠太','……聞こえる。'),
+C('彩音','うん……！'),
+N('神社の外に、一瞬だけ現世が重なる。\n提灯。人影。暮石の町。'),
+C('悠太','彩音ちゃん！　帰れる！'),
+C('彩音','悠太、もう一回！'),
+N('二人がもう一度言葉を重ねる。'),
+N('光が強くなる。\n悠太が、向こう側へ手を伸ばす。'),
+N('——ぷつん。',{bg:'dark',bgm:'stop'}),
+N('祭囃子が、切れた。'),
+N('一つ目の灯が消える。\n二つ目。三つ目。'),
+C('悠太','……え？'),
+N('四つ。五つ。六つ。\nそして七つ目。'),
+N('全ての灯が消えた。'),
+C('悠太','なんでだよ……。\nちゃんとやっただろ。何が足りないんだよ。',{left:'yuta_break',right:'ayane_sad'}),
+N('拝殿の奥で、何かが動く気配がした。'),
+T('足りないもの','彩音だけが知った答え'),
+N('二人は再び古文書を探した。'),
+N('悠太が奥の棚を漁る一方で、彩音は破れた紙を月明かりへ透かす。'),
+G('cg_ritual_truth','彩音が祭祀の真実を読む'),
+P('<b>裏写りした祭祀記録</b><br><br><span class="red">一名を現へ返す時、<br>一名は境に留まり、錨となるべし。</span><br><br>帰る者より、山・神・名・縁の記憶を離す。<br><br><span class="red">さもなくば、双方とも虚へ還る。</span>'),
+N('彩音の指が震えた。'),
+N('意味を読み違える余地はなかった。'),
+C('悠太','彩音ちゃん。何かあった？'),
+C('彩音','……ううん。'),
+C('悠太','今なんか読んでたろ。見せて。'),
+C('彩音','意味なかった。別のやつ。'),
+C('悠太','……嘘。'),
+C('彩音','え？'),
+C('悠太','彩音ちゃん、嘘つく時ちょっと早口になる。'),
+C('彩音','ならないよ。'),
+C('悠太','今も早い。'),
+N('彩音は、笑おうとした。\nけれど、その笑顔は最後まで形にならなかった。'),
+Q('彩音に何を聞く？',[{text:'何を隠してる？',tag:'ask_hide'},{text:'二人で帰れるんだよな？',tag:'ask_two'},{text:'……俺だけ帰す気じゃないよな',tag:'ask_alone'}]),
+C('悠太','何を隠してる？　ちゃんと言えよ。',{when:'ask_hide'}),
+C('悠太','二人で帰れるんだよな？',{when:'ask_two'}),
+C('悠太','……俺だけ帰す気じゃないよな。',{when:'ask_alone'}),
+C('彩音','……帰れるよ。'),
+C('悠太','「二人で」って聞いてる。'),
+N('彩音は答えなかった。\nその沈黙だけで、悠太には十分だった。'),
+T('巻物','最後の手順——という嘘'),
+N('拝殿の奥。古い箱の中に、一巻の巻物があった。'),
+N('彩音は、それが何をするものなのか理解してしまう。'),
+N('名。記憶。認識。縁。\nそれらを切り離し、一人を異界から弾き出すもの。'),
+G('cg_scroll','巻物を悠太へ差し出す彩音'),
+C('彩音','……見つけた。'),
+C('悠太','何を？'),
+C('彩音','最後の手順。'),
+C('悠太','これ読めば帰れる？'),
+C('彩音','……帰れるよ。'),
+C('悠太','二人とも？'),
+N('彩音の唇がわずかに震えた。'),
+C('彩音','悠太。\n今は、私を信じて。'),
+C('悠太','嫌だ。'),
+C('彩音','え……？'),
+C('悠太','なんか隠してる。帰れるなら、なんでそんな顔してんだよ。'),
+C('彩音','そんな顔してない。'),
+C('悠太','してるよ。\n俺一人だけとか言うなよ。それなら、やらない。'),
+C('彩音','悠太……。'),
+C('悠太','二人で帰るって言ったじゃん。二人で怒られるって。'),
+G('cg_serious','「俺は本気だった」'),
+C('悠太','それに……宗一郎さんに頼まれたし。'),
+C('彩音','……お父さんに？'),
+C('悠太','「彩音のこと頼んだぞ」って。\n俺、ちゃんと「はい」って言った。'),
+C('彩音','あれ、冗談だよ。'),
+C('悠太','俺は本気だった。'),
+N('十四歳の少年が、必死に背伸びをして言った。\nけれど、その言葉だけは子供のものには聞こえなかった。'),
+C('悠太','来年も祭り行くだろ。'),
+C('彩音','……うん。'),
+C('悠太','再来年も。'),
+C('彩音','うん。'),
+C('悠太','彩音ちゃん十八になって、俺十五になって。\nその次は俺も高校行って。\nそのあとだって——'),
+C('悠太','だから。一緒に帰るぞ。'),
+C('彩音','……うん。'),
+N('彩音の頬を、涙が一つだけ落ちた。'),
+C('悠太','泣くなよ。'),
+C('彩音','泣いてない。'),
+C('悠太','泣いてる。'),
+C('彩音','……悠太のくせに。'),
+C('悠太','なんだよそれ。'),
+C('彩音','昔は私の後ろに隠れてたのに。'),
+C('悠太','いつの話だよ。'),
+C('彩音','ずっと昔。'),
+N('彩音は、その笑顔を目に焼き付けるように悠太を見た。'),
+N('遠くで怪異の声がした。\nもう時間は残っていない。'),
+C('彩音','悠太。これを読んで。'),
+C('悠太','……本当に？'),
+C('彩音','うん。'),
+C('悠太','二人で帰れる？'),
+C('彩音','……帰ろう。'),
+N('「二人で」とは、最後まで言わなかった。'),
+C('悠太','約束だからな。破ったら絶対許さないから。'),
+C('彩音','怖いなあ。'),
+C('悠太','笑うなよ。'),
+C('彩音','ごめん。……約束。'),
+T('読んではいけなかった言葉','名前が、記憶が、縁がほどけていく'),
+N('悠太が巻物を開いた。'),
+N('そこには、自分の名前があった。'),
+C('悠太','矢吹……悠太……。'),
+N('一文字ずつ読むたびに、世界が遠ざかる。'),
+N('祭り。\n同級生の声。\nりんご飴。\n宗一郎。\n祖父。\n禁域。'),
+N('記憶が一つずつ、手のひらから砂のように零れていく。',{effect:'memory'}),
+C('悠太','……何これ。'),
+C('彩音','読んで。'),
+C('悠太','頭が……変だ。'),
+C('彩音','大丈夫。'),
+C('悠太','大丈夫じゃないって……！'),
+C('悠太','なんか忘れてる。さっきまで覚えてたのに。\n祭りで……俺、何してた？',{left:'yuta_break',right:'ayane_sad'}),
+N('彩音は答えない。\n答えることで、その記憶をもう一度結んでしまいそうだった。'),
+C('悠太','……彩音ちゃん。'),
+C('彩音','なに？'),
+C('悠太','彩音ちゃん。'),
+N('名前を確かめるように、もう一度呼ぶ。'),
+C('彩音','いるよ。ここにいる。'),
+C('悠太','忘れそう。'),
+C('彩音','……悠太。'),
+C('悠太','嫌だ。'),
+C('悠太','嫌だよ。せっかく……せっかく思い出したのに。'),
+C('悠太','一緒に帰るって言っただろ！'),
+C('彩音','うん。'),
+C('悠太','嘘ついたの？'),
+N('彩音は答えなかった。\nそれが答えだった。'),
+C('悠太','……最低。'),
+C('彩音','うん。'),
+C('悠太','絶対許さないから。'),
+C('彩音','うん。'),
+C('悠太','帰ってきたら……'),
+C('悠太','……誰だっけ。'),
+N('彩音の呼吸が止まる。'),
+C('悠太','……あれ。お前……。'),
+G('cg_forget','「忘れていいよ」'),
+C('彩音','悠太。私のこと——'),
+N('言いかけて、彩音は止めた。'),
+N('忘れなければ、生きて帰れない。'),
+C('彩音','……ううん。'),
+C('彩音','忘れていいよ。'),
+C('悠太','……何を？'),
+N('その問いに、彩音は笑った。\n泣きながら。'),
+C('彩音','何でもない。'),
+N('白い光が悠太を包む。',{effect:'flash'}),
+C('悠太','待って。'),
+C('悠太','一人に……一人にしちゃ——'),
+N('声が途切れた。'),
+N('最後まで、名前を呼ぶことはできなかった。'),
+T('残された少女','八月三十二日に、一人'),
+G('cg_alone','一人残る彩音'),
+N('悠太がいた場所には、何もなかった。',{bg:'dark',place:'旧暮石・旧神社'}),
+N('床に、巻物だけが落ちている。'),
+N('彩音はしばらく動かなかった。'),
+N('やがて巻物を拾い、胸へ抱く。'),
+C('彩音','……帰れた。',{right:'ayane_sad'}),
+C('彩音','よかった。'),
+C('彩音','本当に……よかった……。'),
+N('泣き声を聞く者は、もう誰もいなかった。'),
+N('彩音は巻物を丁寧に巻き、奥の部屋の箱へ入れる。'),
+N('鍵をかける。\nもう二度と、悠太の手に渡らないように。'),
+T('九月一日','現世'),
+N('早朝。暮石山では、夜通し捜索が続いていた。',{bg:'dawn',place:'暮石山・早朝',bgm:'stop'}),
+N('「悠太」「彩音」\n二人の名前が、何度も山へ吸い込まれていく。'),
+G('cg_rescue','悠太救出'),
+C('祖父','悠太！',{left:'grandpa_serious'}),
+N('草の上に、悠太が倒れていた。'),
+N('呼吸はある。\n目立った外傷もない。'),
+N('宗一郎は悠太を見たあと、その向こうを見る。'),
+N('誰もいない。'),
+G('cg_where','宗一郎「彩音はどこだ」'),
+C('宗一郎','……彩音は？',{right:'soichiro_panic'}),
+C('宗一郎','悠太君。彩音は？　一緒だったんだろ？'),
+C('祖父','宗一郎、今は——'),
+C('宗一郎','彩音はどこだ！'),
+N('悠太が薄く目を開ける。'),
+C('悠太','……あやね？',{left:'yuta_tired'}),
+N('宗一郎の顔に、ほんの一瞬だけ希望が戻る。'),
+C('悠太','……誰ですか、それ。'),
+N('宗一郎の表情から、すべてが抜け落ちた。'),
+T('山へ','父親'),
+N('その夜。宗一郎は一人で禁域へ向かおうとした。',{bg:'night',place:'暮石山・禁域入口'}),
+G('cg_soichiro','宗一郎が山へ向かう'),
+C('宗一郎','離してください。',{right:'soichiro_panic'}),
+C('祖父','宗一郎！　今は行くな！',{left:'grandpa_serious'}),
+C('宗一郎','あの子がいるんです！　今も！'),
+C('村人','今入ったら、あんたまで戻らんぞ！'),
+C('宗一郎','じゃあどうしろって言うんですか！'),
+N('普段、声を荒らげる男ではなかった。'),
+C('宗一郎','十七ですよ。\nまだ十七なんです。'),
+C('宗一郎','父親がここにいて……あの子が山の中にいるって分かっていて……'),
+C('宗一郎','待ってろって言うんですか……。'),
+C('祖父','行ったら、お前まで戻らん！'),
+C('宗一郎','それでも——'),
+C('祖父','彩音ちゃんが、それを望むと思うか！'),
+N('その言葉だけが、宗一郎を止めた。'),
+T('高熱','帰還の代償'),
+N('悠太は病院へ運ばれた。',{bg:'hospital',place:'暮石・病院'}),
+N('外傷は軽い。\nけれど原因不明の高熱が続いた。'),
+N('四十度近い熱。\n一日。二日。三日。'),
+C('悠太','……かえ……いっしょ……',{left:'yuta_tired'}),
+N('母親が耳を近づけても、その先は聞き取れなかった。'),
+N('病院の廊下では、村人たちが小声で話している。',{bg:'hall',place:'病院・廊下'}),
+C('村人','雨宮さんとこのお嬢ちゃん……山神様に気に入られてしまったのかねぇ。'),
+C('村人','昔もあったそうだよ。山に呼ばれた子は——'),
+C('祖父','やめろ。',{left:'grandpa_stern'}),
+C('村人','……でも悠太くんだけでも帰ってきたんだ。奇跡みたいなもんだよ。'),
+C('悠太の父','奇跡？',{right:'father_hard'}),
+C('悠太の父','女の子が一人、消えてるんですよ。'),
+N('誰も、何も答えられなかった。'),
+T('ここに置くな','大人たちの決断'),
+N('深夜。眠る悠太の病室。',{bg:'hospital',place:'病院・病室'}),
+N('窓の向こうに暮石山が見える。\n祖父は、その山を隠すようにカーテンを閉めた。'),
+C('悠太の母','お義父さん……。',{left:'mother_worry'}),
+C('祖父','この子は、ここに置いちゃいかん。',{center:'grandpa_stern'}),
+C('悠太の父','……何？',{right:'father_hard'}),
+C('祖父','土地を離れろ。村だけじゃない。できるだけ遠くへ。'),
+C('悠太の父','急にそんな……仕事も家もあるんだぞ。'),
+C('祖父','悠太とどっちが大事じゃ。'),
+N('父親が黙る。'),
+C('祖父','山で何を見たかは知らん。悠太も覚えとらん。\nそれでええ。'),
+C('悠太の母','この子に……何か憑いてるってことですか？'),
+C('祖父','そういう言い方をするな。'),
+C('祖父','名前をつけるな。\n考えさせるな。\n思い出させるな。'),
+C('悠太の父','本人が聞いてきたら？'),
+C('祖父','言わんでええ。'),
+C('悠太の父','いつまで隠すんだ。'),
+C('祖父','大人になるまで。'),
+C('祖父','子供は境目が薄い。\n知らんものを、知らんまま受け流せる。'),
+C('祖父','だが一度「あれは何だった」と考え始めたら、自分から向こうへ道を作る。'),
+C('祖父','然るべき時が来たら、自分で受け止められる歳になってから知ればええ。'),
+C('祖父','今は、忘れとるなら……忘れたままにしてやれ。'),
+N('母親は眠る悠太の手を握った。'),
+T('目覚め','数日後'),
+N('朝。悠太がゆっくり目を開けた。',{bg:'hospital',place:'病院・病室'}),
+C('悠太','……病院？',{left:'yuta_tired'}),
+C('悠太の母','悠太……！　よかった……。',{right:'mother_relief'}),
+C('悠太','俺、何したの？'),
+C('悠太の母','……覚えてないの？'),
+C('悠太','祭り行って……それから……。'),
+C('悠太','誰かといたような……。'),
+N('母親の呼吸が止まる。'),
+C('悠太','……誰だっけ。'),
+C('悠太の母','無理に思い出さなくていいの。今は休んで。'),
+C('悠太','なんで？'),
+C('悠太の母','疲れてるから。'),
+N('母親は、泣きそうな顔で笑った。'),
+T('引っ越し','暮石を離れる日'),
+N('数週間後。矢吹家には段ボールが積まれていた。',{bg:'house',place:'矢吹家'}),
+C('悠太','……急すぎない？',{left:'yuta_resolve'}),
+C('悠太の父','仕事の都合だ。',{right:'father_pain'}),
+C('悠太','聞いてない。じいちゃんは？'),
+C('悠太の父','ここに残る。'),
+C('悠太','なんで俺らだけ？'),
+N('父親は答えられない。'),
+C('悠太の母','新しいところも、きっといい場所よ。',{right:'mother_worry'}),
+C('悠太','何か隠してるだろ。'),
+C('悠太','俺、山で何かあったんじゃないの。だから引っ越すの？'),
+C('悠太の父','違う。仕事だ。'),
+C('悠太','……意味分かんねえ。'),
+G('cg_car','引っ越し・車窓'),
+N('車が暮石を離れる。',{bg:'road',place:'暮石を離れる道'}),
+N('後部座席から振り返ると、道端に祖父が立っていた。'),
+C('悠太','じいちゃん！　また来るから！'),
+C('祖父','……おう。元気でな。',{left:'grandpa_bitter'}),
+C('悠太','なんだよそれ。すぐ来るって。'),
+C('祖父','そうじゃな。'),
+N('車が進む。\n祖父が小さくなる。\nその向こうに、暮石山。'),
+C('悠太','……なんか。'),
+C('悠太の母','どうしたの？',{right:'mother_worry'}),
+C('悠太','忘れてる気がする。'),
+C('悠太','すげえ大事なこと。忘れた気がする。'),
+C('悠太の母','……気のせいよ。'),
+C('悠太','そっか。'),
+N('暮石が見えなくなる。'),
+T('父親の夏は終わらない','雨宮宗一郎'),
+N('宗一郎の研究室。',{bg:'lab',place:'雨宮宗一郎・研究室'}),
+N('机を埋め尽くす地図、古文書、録音機、写真。'),
+N('祭りの日に撮った彩音の写真が、一番見える場所に置かれている。'),
+P('<b>雨宮宗一郎　調査日誌</b><br><br>八月三十一日。<br>悠太君のみ帰還。記憶欠落。<br>彩音の所在不明。<br><br>村は何かを知っている。<br>旧暮石。禁域。「名前」「因果」。<br><br><span class="red">彩音は死んだのか。</span><br>——取消線——<br><br>遺体はない。<br>ならば、まだいる。'),
+N('日を追うごとに、研究記録へ父親の言葉が混ざっていく。'),
+P('<b>日誌・最終頁</b><br><br>待っていろ。<br>必ず迎えに行く。'),
+G('cg_soichiro','一人で山へ向かう宗一郎'),
+N('調査鞄。懐中電灯。録音機。ノート。',{bg:'night',place:'暮石山・夜'}),
+N('宗一郎は一人で山へ入っていく。'),
+N('その先は——映らない。'),
+T('現在','十年後'),
+N('ノイズ。\n白。\n呼吸。',{bg:'current',place:'八月三十二日・現在',effect:'flash'}),
+N('二十四歳の悠太が、巻物を手にしている。'),
+N('目の前に、彩音。\n十年前と変わらない顔で。'),
+C('悠太','……彩音ちゃん。'),
+N('その呼び方に、彩音の目が見開かれる。'),
+C('悠太','俺……思い出した。'),
+C('彩音','……だから。'),
+C('彩音','開いてほしくなかったのに。'),
+C('悠太','お前が……俺を帰したのか。'),
+N('彩音は答えない。\nそれで十分だった。'),
+C('悠太','俺だけ帰して……お前は……。'),
+C('悠太','……十年？'),
+C('彩音','悠太にとってはね。'),
+C('彩音','私は……もう、よく分からない。'),
+N('悠太だけが学校へ行き、成長し、二十四歳になった。'),
+N('彩音だけが、八月三十二日に置き去りになった。'),
+Q('悠太は何を言う？',[{text:'……ごめん',tag:'now_sorry'},{text:'どうして一人で決めたんだ',tag:'now_angry'},{text:'もう置いていかない',tag:'now_promise'}]),
+C('悠太','……ごめん。',{when:'now_sorry'}),
+C('彩音','それは言わないで。\n私がやったの。私が悠太に読ませた。',{when:'now_sorry'}),
+C('悠太','どうして一人で決めたんだ。俺にも選ばせろよ。',{when:'now_angry'}),
+C('彩音','十四歳の悠太に？\n……選ばせられるわけないよ。',{when:'now_angry'}),
+C('悠太','もう置いていかない。今度は絶対に。',{when:'now_promise'}),
+C('彩音','……悠太。',{when:'now_promise'}),
+C('悠太','じゃあ、どうすりゃいいんだよ。'),
+N('十年という時間に対して、正しい言葉などなかった。'),
+N('悠太は長く息を吐く。\nそして、顔を上げる。'),
+C('悠太','……彩音ちゃん。'),
+C('彩音','なに。'),
+C('悠太','帰ろう。'),
+C('悠太','今度は、二人で。'),
+N('彩音の目から、涙が一滴だけ落ちる。'),
+C('彩音','……うん。'),
+T('第三章　了','十年前の八月三十一日'),
+N('——第四章へ。',{bg:'current',place:'八月三十二日・現在',end:true})
+];
+let idx=0,log=[],auto=false,bgmOn=true,hiddenUI=false,activeBg=0,choiceState={};
+const el=id=>document.getElementById(id); const bgA=el('bgA'),bgB=el('bgB'),nameEl=el('name'),textEl=el('text'),placeEl=el('place');
+const chL=el('chL'),chC=el('chC'),chR=el('chR'),dialogue=el('dialogue'),cg=el('cg'),cgFrame=el('cgFrame'),paper=el('paper'),paperBody=el('paperBody');
+const audio=new Audio();audio.loop=true;audio.volume=.42;
+function asset(k){return ASSET[k]||''}
+function setBg(key){if(!key)return;const target=activeBg?bgA:bgB,old=activeBg?bgB:bgA;const path=asset(IMGKEY[key]);target.style.backgroundImage=path?`url("${path}"),${BGFALLBACK[key]||BGFALLBACK.dark}`:(BGFALLBACK[key]||BGFALLBACK.dark);target.style.opacity='1';old.style.opacity='0';activeBg=1-activeBg}
+function setChar(img,pos,key){img.className='ch '+pos; if(!key){img.classList.remove('show');img.removeAttribute('src');return}img.src=asset(key);img.onerror=()=>{img.style.display='none'};img.onload=()=>{img.style.display='block'};requestAnimationFrame(()=>img.classList.add('show'))}
+function setChars(s){setChar(chL,'left',s.left);setChar(chC,'center',s.center);setChar(chR,'right',s.right)}
+function showCG(key,label){cgFrame.style.backgroundImage=`url("${asset(key)}")`;cgFrame.dataset.label=label||'イベントCG';cgFrame.classList.remove('missing');const probe=new Image();probe.onload=()=>cgFrame.classList.remove('missing');probe.onerror=()=>{cgFrame.style.backgroundImage='none';cgFrame.classList.add('missing')};probe.src=asset(key);cg.classList.add('show')}
+function hideCG(){cg.classList.remove('show')}
+function doFlash(){const f=el('flash');f.style.opacity='1';setTimeout(()=>f.style.opacity='0',180)}
+function titleCard(s){el('tcBig').textContent=s.titleCard;el('tcSub').textContent=s.sub||'';el('titleCard').classList.add('show');setTimeout(()=>el('titleCard').classList.remove('show'),1600)}
+function showPaper(html){paperBody.innerHTML=html;paper.classList.add('show')}
+function playBgm(cmd){if(cmd==='stop'){audio.pause();return}if(cmd==='play'&&bgmOn){if(!audio.src)audio.src=asset('bgm_main');audio.play().catch(()=>{})}}
+function matchesWhen(s){return !s.when||choiceState[s.when]}
+function render(){while(idx<scenes.length&&!matchesWhen(scenes[idx]))idx++;const s=scenes[idx];if(!s)return;
+ if(s.titleCard){titleCard(s);idx++;setTimeout(render,1700);return}
+ if(s.paper){showPaper(s.paper);idx++;return}
+ if(s.cg){showCG(s.cg,s.cgLabel);idx++;return}
+ if(s.choice){showChoice(s.choice);return}
+ hideCG();paper.classList.remove('show');el('memoryName').classList.toggle('show',s.effect==='memory');if(s.effect==='flash')doFlash();
+ if(s.bg)setBg(s.bg);if(s.place)placeEl.textContent=s.place;if(s.bgm)playBgm(s.bgm);setChars(s);
+ nameEl.textContent=s.name||'';textEl.textContent=s.text||'';if(s.text){log.push({name:s.name||'',text:s.text});if(log.length>160)log.shift()}
+ if(s.end){el('advance').innerHTML='第三章 終了 <span class="dia"></span>'}
+ if(auto&&!s.end)setTimeout(next,Math.max(1800,700+(s.text||'').length*65));
+}
+function next(){if(cg.classList.contains('show')){hideCG();return render()}if(paper.classList.contains('show')){paper.classList.remove('show');return render()}if(el('titleCard').classList.contains('show'))return;const s=scenes[idx];if(s&&s.choice)return;if(idx<scenes.length-1){idx++;render()}}
+function showChoice(c){el('choicePrompt').textContent=c.prompt||'';const box=el('choiceButtons');box.innerHTML='';c.options.forEach(o=>{const b=document.createElement('button');b.className='choiceBtn';b.textContent=o.text;b.onclick=e=>{e.stopPropagation();choiceState={};choiceState[o.tag]=true;el('choice').classList.remove('show');idx++;render()};box.appendChild(b)});el('choice').classList.add('show')}
+function save(){localStorage.setItem('banka_ch3b',JSON.stringify({idx,choiceState}));toast('保存しました')}
+function load(){try{const d=JSON.parse(localStorage.getItem('banka_ch3b'));if(d){idx=d.idx||0;choiceState=d.choiceState||{};render();toast('ロードしました')}}catch(e){toast('セーブデータを読めません')};el('menu').classList.remove('show')}
+function toast(t){const x=el('saveToast');x.textContent=t;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),1200)}
+function showLog(){el('logList').innerHTML=log.map(x=>`<div class="logItem"><span class="logName">${x.name||'—'}</span>${x.text.replace(/\n/g,'<br>')}</div>`).join('');el('log').classList.add('show')}
+function toggleAuto(){auto=!auto;toast(auto?'自動送り ON':'自動送り OFF');if(auto)render()}
+function toggleBgm(){bgmOn=!bgmOn;if(!bgmOn)audio.pause();else audio.play().catch(()=>{});toast(bgmOn?'BGM ON':'BGM OFF')}
+function hideUi(){hiddenUI=!hiddenUI;dialogue.style.opacity=hiddenUI?'0':'1';el('chapter').style.opacity=hiddenUI?'0':'1';el('top').style.opacity=hiddenUI?'0':'1';el('sound').style.opacity=hiddenUI?'0':'1'}
+el('app').addEventListener('click',e=>{if(e.target.closest('button,.navlink,#paper'))return;next()});paper.onclick=e=>{e.stopPropagation();paper.classList.remove('show');render()};cg.onclick=e=>{e.stopPropagation();hideCG();render()};
+el('saveBtn').onclick=e=>{e.stopPropagation();save()};el('menuBtn').onclick=e=>{e.stopPropagation();el('menu').classList.add('show')};el('logBtn').onclick=e=>{e.stopPropagation();showLog()};el('autoBtn').onclick=e=>{e.stopPropagation();toggleAuto()};el('hideBtn').onclick=e=>{e.stopPropagation();hideUi()};el('sound').onclick=e=>{e.stopPropagation();toggleBgm()};
+document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>el(b.dataset.close).classList.remove('show'));
+el('menuSave').onclick=save;el('menuLoad').onclick=load;el('menuAuto').onclick=toggleAuto;el('menuLog').onclick=showLog;el('menuBgm').onclick=toggleBgm;el('menuRestart').onclick=()=>{if(confirm('第三章後半を最初から開始しますか？')){idx=0;choiceState={};el('menu').classList.remove('show');render()}};
+document.addEventListener('touchstart',()=>{if(bgmOn&&audio.paused&&audio.src)audio.play().catch(()=>{})},{once:true,passive:true});
+setBg('hideout');render();
+</script>
+</body></html>
