@@ -2,6 +2,13 @@
 (()=>{
 'use strict';
 const COUNT=7, gate={x:0,z:44.5}, exit={x:0,z:46.5};
+// Compact chapter boundary. The sparse outer wedges from the legacy map are deliberately removed.
+const CHAPTER_BORDER=[
+ [-31,-5],[-30,-18],[-25,-28],[-15,-33],[-5,-34],
+ [5,-34],[15,-32],[24,-27],[29,-17],[30,-5],
+ [29,7],[27,18],[22,27],[13,32],[4,35],
+ [-4,35],[-13,32],[-22,28],[-28,20],[-30,8]
+];
 window.__forestChapterActive=true;
 let lampTemplate=null,candleTemplate=null,lamps=[],candles=[],lit=0,passageOpen=false;
 // Legacy ready toggles during intermediate initialization; only this flag marks the completed chapter.
@@ -76,7 +83,7 @@ function copyModel(template,x,z,height){const g=template.clone(true);const facto
  g.visible=true;scene.add(g);return g;}
 function choosePoints(count,used=[],spacing=7){
  const s=world.spawns.forest;const source=(s.reachable||s.candidates).filter(p=>p&&Number.isFinite(p.x)&&Number.isFinite(p.z));
- const points=s.shuffle([...source]).filter(p=>Math.abs(p.x)<38&&Math.abs(p.z)<37&&Math.hypot(p.x,p.z-32)>7&&Math.hypot(p.x,p.z-42)>8&&Math.hypot(p.x,p.z)>5&&!collision(p.x,p.z,.9));
+ const points=s.shuffle([...source]).filter(p=>MapManager.inside(p.x,p.z,1.2)&&p.z<33&&Math.hypot(p.x,p.z-32)>7&&Math.hypot(p.x,p.z-42)>8&&Math.hypot(p.x,p.z)>5&&!collision(p.x,p.z,.9));
  const selected=[];for(const p of points){if([...used,...selected].every(q=>distance(p,q)>=spacing)){selected.push({x:p.x,z:p.z});if(selected.length===count)break;}}
  if(selected.length!==count)throw Error('森に灯籠と蝋燭を配置する場所が足りません');return selected;
 }
@@ -90,7 +97,11 @@ function resetScene(){for(const item of [...lamps,...candles]){scene.remove(item
  for(const locker of window.__lockerSystem?.spots||[])scene.remove(locker.group);
  if(window.__lockerSystem){window.__lockerSystem.spots.length=0;window.__lockerSystem.setupDone=true;}
  if(offerings?.models?.sake)offerings.models.sake.visible=false;if(offerings?.models?.dango)offerings.models.dango.visible=false;
- if(revision){revision.gate.visible=false;revision.paper.visible=false;for(const r of revision.radios){r.group.visible=false;r.lamp.visible=false;}}if(rearPassage?.gate)rearPassage.gate.visible=false;
+ if(revision){
+  revision.gate.visible=false;revision.paper.visible=false;revision.target=null;revision.forceChase=0;
+  for(const r of revision.radios){revision.stopRadio?.(r);r.on=false;r.broken=false;r.remaining=38;r.cooldown=0;r.group.visible=true;r.group.rotation.z=0;r.lamp.visible=false;}
+ }
+ if(rearPassage?.gate)rearPassage.gate.visible=false;
  if(bike){bike.visible=false;bike.position.set(gate.x,world.map.floor(gate.x,gate.z),gate.z);}if(seven?.lock){seven.lock.key.group.visible=false;seven.lock.gate.visible=true;seven.lock.found=false;seven.lock.unlocked=false;}
  for(const item of inventory.slots.slice())inventory.removeMatch(s=>s===item);
  const sites=choosePoints(COUNT,[],9),supplies=choosePoints(COUNT,sites,5);
@@ -122,12 +133,12 @@ const lockers=window.__lockerSystem;
 if(lockers)lockers.setup=function(){this.setupDone=true;for(const spot of this.spots)scene.remove(spot.group);this.spots.length=0;};
 const oldProps=MapManager.prototype.placeProps;MapManager.prototype.placeProps=function(){pendingLanterns.length=0;pendingTorii.length=0;oldProps.call(this);};
 MapManager.prototype.buildCliffs=function(){
- // A continuous forest ring closes the old cave/shrine openings and every polygon seam.
+ // A continuous compact forest ring replaces the oversized legacy perimeter.
  // Keep a gap only at the actual tunnel mouth; the existing tunnel rock surrounds it.
  const mat=this.stone.clone();mat.side=THREE.DoubleSide;mat.color.set(0x899183);mat.depthWrite=true;
- for(let edge=0;edge<FOREST_BORDER.length;edge++){
-  const a=FOREST_BORDER[edge],b=FOREST_BORDER[(edge+1)%FOREST_BORDER.length];
-  if(a[1]===44&&b[1]===44&&Math.abs(a[0])<=3&&Math.abs(b[0])<=3)continue;
+ for(let edge=0;edge<CHAPTER_BORDER.length;edge++){
+  const a=CHAPTER_BORDER[edge],b=CHAPTER_BORDER[(edge+1)%CHAPTER_BORDER.length];
+  if(a[1]===35&&b[1]===35&&Math.max(Math.abs(a[0]),Math.abs(b[0]))<=4.1)continue;
   const segments=Math.max(1,Math.ceil(Math.hypot(b[0]-a[0],b[1]-a[1])/.85));const vertices=[],uv=[];
   for(let j=0;j<segments;j++){
    const point=(t,y)=>{const x=a[0]+(b[0]-a[0])*t,z=a[1]+(b[1]-a[1])*t,mag=Math.hypot(x,z)||1;
@@ -153,18 +164,20 @@ RegionalSpawnManager.prototype.pool=function(points){const p=priorPool.call(this
 RegionalSpawnManager.prototype.layout=function(){const forest=this.forest,points=choosePoints(7,[],5),cells=choosePoints(11,points,2.5);return {items:points,cells,key:{x:0,z:0},enemy:forest.enemySpawn(points)};};
 MapManager.prototype.buildTunnel=function(){scene.remove(bike);bike.visible=false;this.tunnel=this.assets.place('futatsugoya_tunnel_abandoned_road_japan',0,40,{distance:100});seven.lock.gate.position.set(0,this.floor(0,44.5),44.5);seven.lock.gate.scale.set(.57,1,1);this.sealTunnelTerrain();};
 delete WORLD_ASSETS.bmw_bike;
-// Replace the old cave/shrine/village supply layout with forest-only first aid.
-survivalSystem.setup=function(){if(this.setupDone)return;for(const p of choosePoints(3,[],10)){const floor=world.map.floor(p.x,p.z),g=this.cloneAsset('survival_bandage',p.x,p.z,{y:floor+.02,scale:.040});this.pickups.push({type:'bandage',x:p.x,z:p.z,group:g,found:false,baseY:floor+.02,spin:Math.random()*6.28});}this.setupDone=true;this.updateHealthUI();};
+// Bandages are intentionally removed from this chapter; health/stamina systems remain active.
+survivalSystem.setup=function(){if(this.setupDone)return;this.setupDone=true;this.updateHealthUI();};
 function restrictToForest(){
- MapManager.inside=(x,z,r=0)=>inBoundary(x,z,FOREST_BORDER,r)||(x>-3+r&&x<3-r&&z>38+r&&z<58-r);
-MapManager.prototype.area=function(x,z){return z>39?'トンネル':'森';};
+ MapManager.inside=(x,z,r=0)=>inBoundary(x,z,CHAPTER_BORDER,r)||(x>-3+r&&x<3-r&&z>33+r&&z<58-r);
+ MapManager.prototype.area=function(x,z){return z>36?'トンネル':'森';};
  MapManager.prototype.floor=function(x,z){if(Math.abs(x)<4.5&&z>26){const profile=[0,.13,.37,.41,.46,.58,.69,.72,.81,.91,1,1.05],t=clamp((z-24)/3,0,profile.length-1),i=Math.floor(t);return (profile[i]+(profile[Math.min(i+1,profile.length-1)]-profile[i])*(t-i))*clamp((z-28)/4,0,1);}return 0;};
 }
+// Apply the compact boundary before the legacy initializer generates spawns and collision data.
+restrictToForest();
 const originalInit=init;
 init=async function(...args){
  chapterReady=false;
  try{await originalInit.apply(this,args);if(!ready)return;
- restrictToForest();ready=false;$('start').disabled=true;
+  restrictToForest();ready=false;$('start').disabled=true;
   [lampTemplate,candleTemplate]=await Promise.all([loadGLB('assets/stone_lamp.glb'),loadGLB('assets/candle_low.glb')]);
   lampTemplate=separateLanterns(lampTemplate);
   // Hide old cave/shrine fixtures added by late initialization patches.
@@ -172,7 +185,7 @@ init=async function(...args){
   if(revision?.gate)revision.gate.visible=false;if(rearPassage?.gate)rearPassage.gate.visible=false;
   if(offerings?.models?.sake)offerings.models.sake.visible=false;if(offerings?.models?.dango)offerings.models.dango.visible=false;
   if($('offering-status'))$('offering-status').hidden=true;
-  if(world?.assets?.instances)world.assets.instances=world.assets.instances.filter(inst=>{if(Math.abs(inst.x)>44||inst.z < -44){scene.remove(inst.g);return false;}return true;});
+  if(world?.assets?.instances)world.assets.instances=world.assets.instances.filter(inst=>{const keepTunnel=Math.abs(inst.x)<5&&inst.z>33;if(!keepTunnel&&!MapManager.inside(inst.x,inst.z,.1)){scene.remove(inst.g);return false;}return true;});
   ready=true;chapterReady=true;$('start').disabled=false;$('load-message').textContent='CANDLE FOREST READY';
  }catch(e){chapterReady=false;ready=false;show('fatal');$('fatal-detail').textContent='灯籠・蝋燭の準備に失敗しました。 '+(e?.stack||e?.message||String(e));console.error(e);}
 };
@@ -212,7 +225,8 @@ function nearest(){if(state!=='playing')return null;const p={x:player.x,z:player
  return best;
 }
 const previousGetInteraction=getInteraction;
-getInteraction=function(){const hit=nearest();if(hit)return hit;const old=previousGetInteraction();return ['cell','survival-pickup','dropped-item'].includes(old?.type)?old:null;};
+const allowedLegacyInteraction=new Set(['cell','radio','dropped-item']);
+getInteraction=function(){const hit=nearest();if(hit)return hit;const old=previousGetInteraction();return allowedLegacyInteraction.has(old?.type)?old:null;};
 function act(hit){if(hit.type==='candle'){
  const c=hit.item;if(!inventory.canAdd()){toast('所持品は3つまで。灯籠に火を灯して空きを作ろう。',3);return;}
  if(inventory.add({type:'candle',p:c})){c.found=true;c.group.visible=false;audio.pickup();status();toast('蝋燭を拾った。灯籠まで運ぼう。',3);}
@@ -228,7 +242,7 @@ function act(hit){if(hit.type==='candle'){
  }
 }
 const previousInteract=interact;
-interact=function(){const hit=nearest();if(hit){act(hit);return;}const old=previousGetInteraction();if(['cell','survival-pickup','dropped-item'].includes(old?.type))return previousInteract();};
+interact=function(){const hit=nearest();if(hit){act(hit);return;}const old=previousGetInteraction();if(allowedLegacyInteraction.has(old?.type))return previousInteract();};
 const previousUpdate=updatePlayer;
 updatePlayer=function(dt){previousUpdate(dt);
  $('forest-time').textContent=clockText(elapsed);
