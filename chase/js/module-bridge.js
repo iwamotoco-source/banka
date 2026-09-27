@@ -134,7 +134,9 @@
 
  function cullRemovedArea(){
   if(typeof world==='undefined'||!world?.assets?.instances||typeof scene==='undefined')return;
+  const radioGroups=new Set((typeof revision!=='undefined'&&Array.isArray(revision?.radios)?revision.radios:[]).map(r=>r?.group).filter(Boolean));
   world.assets.instances=world.assets.instances.filter(inst=>{
+   if(radioGroups.has(inst.g))return true;
    if(!Number.isFinite(inst.x)||!Number.isFinite(inst.z))return true;
    if(tunnelPoint(inst.x,inst.z,.05)||inBoundary(inst.x,inst.z,BORDER,.05))return true;
    if(inst.g)scene.remove(inst.g);
@@ -201,11 +203,12 @@
  function placeChapterRadio(){
   const radios=typeof revision!=='undefined'?revision?.radios:null;if(!Array.isArray(radios)||!radios.length)return null;
   for(const r of radios){try{revision.stopRadio?.(r);}catch(_){ }r.on=false;r.broken=false;r.remaining=38;r.cooldown=0;if(r.group)r.group.visible=false;if(r.lamp)r.lamp.visible=false;}
-  const r=radios[0],spot=chooseRadioSpot(),oldFloor=world.map.floor(r.x,r.z),newFloor=world.map.floor(spot.x,spot.z);
+  const r=radios[0],spot=chooseRadioSpot();
+  const oldFloor=Number.isFinite(r.x)&&Number.isFinite(r.z)?world.map.floor(r.x,r.z):0,newFloor=world.map.floor(spot.x,spot.z);
   const yOffset=Number.isFinite(r.group?.position?.y)?r.group.position.y-oldFloor:.46;
   r.x=spot.x;r.z=spot.z;r.village=false;r.on=false;r.broken=false;r.remaining=38;r.cooldown=0;
-  if(r.group){r.group.position.set(r.x,newFloor+(Number.isFinite(yOffset)?yOffset:.46),r.z);r.group.rotation.z=0;r.group.visible=true;}
-  if(r.lamp){r.lamp.position.set(r.x,newFloor+.71,r.z-.29);r.lamp.visible=false;}
+  if(r.group){r.group.position.set(r.x,newFloor+(Number.isFinite(yOffset)?yOffset:.46),r.z);r.group.rotation.z=0;r.group.visible=true;if(!r.group.parent)scene.add(r.group);}
+  if(r.lamp){r.lamp.position.set(r.x,newFloor+.71,r.z-.29);r.lamp.visible=false;if(!r.lamp.parent)scene.add(r.lamp);}
   const inst=world.assets?.instances?.find(v=>v.g===r.group);if(inst){inst.x=r.x;inst.z=r.z;inst.distance=Math.max(inst.distance||0,90);}
   activeRadio=r;
   rebuildCompactObstacles(true);if(typeof addObstacle==='function')addObstacle(r.x,r.z,.48,'chapter-radio');
@@ -264,5 +267,6 @@
   const baseUpdatePlayer=updatePlayer;
   updatePlayer=function(dt){baseUpdatePlayer(dt);const r=radioNear();if(r){show('interaction');const button=document.getElementById('interaction');if(button){button.disabled=false;button.textContent=r.on?'ラジオを切る':'ラジオをつける';}}};
  }
+ window.addEventListener('ubasuteyama:result',stopFallbackNoise);
  window.BankaCompactForest={border:BORDER,get radio(){return activeRadio;},reapply:postStartCleanup};
 })();
